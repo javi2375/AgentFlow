@@ -25,7 +25,13 @@ AgentFlow: In-The-Flow Agentic System Optimization for Effective Planning and To
 
 AgentFlow is a trainable, tool-integrated agentic framework that addresses the scalability and generalization limitations of current tool-integrated reasoning approaches. 
 
-Unlike prevailing methods, like Search-R1 that train a single LLM interleaving thoughts and tool calls, AgentFlow provides a modular agentic system with four specialized modules (planner, executor, verifier, generator) that coordinate through evolving memory and a toolkit over multiple turns to solve complex reasoning tasks. For effective planning and tool use, the framework directly optimizes the planner agent within the system in an online fashion using Flow-based Group Refined Policy Optimization (Flow-GRPO), achieving superior performance across diverse domains with improved tool-calling reliability and long-horizon reasoning capabilities.
+Unlike prevailing methods, like Search-R1 that train a single LLM interleaving thoughts and tool calls, AgentFlow provides a modular agentic system with four specialized modules (planner, executor, verifier, generator) that coordinate through evolving memory and a toolkit over multiple turns to solve complex reasoning tasks.
+
+![framework_overall](assets/img/framework.png)
+
+For effective planning and tool use, the framework directly optimizes the planner agent within the system in an online fashion using Flow-based Group Refined Policy Optimization (Flow-GRPO), achieving superior performance across diverse domains with improved tool-calling reliability and long-horizon reasoning capabilities.
+
+![flow_grpo](assets/img/flow_grpo.png)
 
 ## Key Features
 + **Modular Agentic System**: Powerful Agentic System with four specialized modules (planner, executor, verifier, generator) augmented with tools that coordinate through evolving memory across multiple turns.
@@ -80,7 +86,7 @@ bash train/train_with_logs.sh
 **Configuration:**
 All training hyperparameters are in `train/config.yaml` (model settings, tools, RL parameters, resources, etc.)
 
-### AgentFlow Infer
+### AgentFlow Inference
 Serve the trained planner model with VLLM (here we deploy our 7B Flow-GRPO planner model).:
 ```bash
 bash scripts/serve_vllm.sh
