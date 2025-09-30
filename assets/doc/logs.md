@@ -1,41 +1,24 @@
 ## Training Logs and Outputs
 
 ### Training Logs
-During training, logs are automatically saved with IP-based organization:
+
+During training, training output logs are automatically saved with IP-based organization:
 ```
 task_logs/
 └── {PUBLIC_IP}/
     └── train_log/
-        ├── training_output_0000  # First 1MB of logs
+        ├── training_output_0000  # First 1MB
         ├── training_output_0001  # Next 1MB
-        ├── training_output_0002
         └── ...
 ```
+
+**Configuration:**
 - Logs are split into 1MB files for easier management (configurable in `train/train_with_logs.sh`)
 - Maximum 5000 log files retained
 - Monitor latest logs: `tail -f task_logs/{YOUR_IP}/train_log/training_output_*`
-
-### Model Checkpoints
-Trained model checkpoints are saved periodically:
-```
-checkpoints/
-└── {PROJECT_NAME}/           # e.g., AgentFlow_general (from config.yaml)
-    └── {EXPERIMENT_NAME}/    # e.g., rollout_all_7B_useklloss (from config.yaml)
-        ├── global_step_2/
-        │   ├── actor/
-        │   │   └── huggingface/  # HuggingFace format (ready for inference)
-        │   └── data.pt           # Training state
-        ├── global_step_4/
-        ├── global_step_6/
-        └── latest_checkpointed_iteration.txt  # Points to latest checkpoint
-```
-**Checkpoint settings** (in `train/config.yaml`):
-- `trainer.save_freq`: Checkpoint frequency (default: every 2 epochs)
-- `trainer.test_freq`: Validation frequency (default: every 2 epochs)
-- `trainer.total_epochs`: Total training epochs (default: 5)
-
 ### Rollout Data
-During training, rollout trajectories are saved for analysis(start from 0 for each restart, the actual step may be different):
+
+During training, rollout trajectories are saved for analysis:
 ```
 rollout_data/
 └── {PUBLIC_IP}/
@@ -53,19 +36,41 @@ rollout_data/
                     └── ...
 ```
 
-**Rollout JSON structure** (each `rollout_{uuid}.json`):
-- `prompt`: Original problem/query
-- `groundtruth`: Expected answer
-- `answer_extracted`: Model's extracted answer
-- `reward`: Reward score (0.0 for incorrect, positive for correct)
-- `total_result`: Complete execution trace including:
-  - `query_analysis`: Problem analysis
-  - `memory`: Step-by-step tool execution history
-  - `direct_output`: Final model response
-  - Tool prompts and responses for each step
-- `timestamp`: Rollout generation time
+**Note:** Step numbers restart from 0 after each training restart.
 
-**Using saved checkpoints:**
-The models in `checkpoints/{PROJECT}/{EXPERIMENT}/global_step_X/actor/huggingface/` can be used for:
-1. **Inference via VLLM**: Configure model paths in `scripts/serve_vllm.sh`
-2. **Direct loading**: Standard HuggingFace Transformers `from_pretrained()`
+**Rollout JSON Fields:**
+| Field | Description |
+|-------|-------------|
+| `prompt` | Original problem/query |
+| `groundtruth` | Expected answer |
+| `answer_extracted` | Model's predicted answer |
+| `reward` | Score (0.0 = incorrect, positive = correct) |
+| `total_result` | Full execution trace with:<br>• `query_analysis`: Problem breakdown<br>• `memory`: Tool execution history<br>• `direct_output`: Final response<br>• Tool prompts and responses |
+| `timestamp` | Generation time |
+
+
+### Model Checkpoints
+
+**Directory Structure:**
+```
+checkpoints/
+└── {PROJECT_NAME}/           # e.g., AgentFlow_general (from config.yaml)
+    └── {EXPERIMENT_NAME}/    # e.g., rollout_all_7B_useklloss (from config.yaml)
+        ├── global_step_2/
+        │   ├── actor/
+        │   │   └── huggingface/  # HuggingFace format (ready for inference)
+        │   └── data.pt           # Training state
+        ├── global_step_4/
+        ├── global_step_6/
+        └── latest_checkpointed_iteration.txt  # Points to latest checkpoint
+```
+
+**Configuration (`train/config.yaml`):**
+- `trainer.save_freq`: Save interval (default: every 2 epochs)
+- `trainer.test_freq`: Validation interval (default: every 2 epochs)
+- `trainer.total_epochs`: Total epochs (default: 5)
+
+**Usage:**
+- **VLLM inference**: Configure paths in `scripts/serve_vllm.sh`
+- **Direct loading**: `transformers.from_pretrained("checkpoints/{PROJECT}/{EXPERIMENT}/global_step_X/actor/huggingface/")`
+
