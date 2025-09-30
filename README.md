@@ -38,6 +38,20 @@ For effective planning and tool use, the framework directly optimizes the planne
 + **Multi-Tool Integration**: Seamless integration with diverse tool ecosystems, including base_generator, python_coder, google_search, wikipedia_search, and web_search.
 + **Flow-GRPO Algorithm**: Novel Flow-based Group Refined Policy Optimization that enables in-the-flow optimization within agentic systems under long-horizon reasoning tasks with sparse reward.
 
+## Experiments
+### Main results
+Through comprehensive experiments on ten benchmarks, AgentFlow with a 7B-scale backbone (Qwen-2.5-7B-Instruct) outperforms top-performing baselines with average accuracy gains of 14.9% on search, 14.0% on agentic, 14.5% on mathematical, and 4.1% on scientific tasks. Notably, our 7B-backbone system even surpasses the ∼200B-parameter GPT-4o. 
+
+![main_table](assets/img/main_table.png)
+
+### In-depth analysis
+Further analyses confirm the benefits of in-the-flow optimization,
+demonstrating improved planning, enhanced tool-calling reliability, and positive
+scaling trends with model size and reasoning turns. Please explore more findings at our paper or the project page.
+
+![tool_call](assets/img/tool_call.png)
+
+
 ## Setup
 ### Installation
 ```bash
