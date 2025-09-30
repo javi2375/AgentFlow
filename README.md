@@ -140,6 +140,34 @@ bash exp/run_all_models_all_datasets.sh
 </tr>
 </table>
 
+## Advisors
+
+<table>
+<tr>
+    <td align="center">
+        <a href="https://www.james-zou.com/">
+            <img src="https://static.wixstatic.com/media/0f3e8f_cfa7e327b97745ddb8c4a66454b5eb3e~mv2.jpg/v1/fill/w_398,h_557,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/46824428A5822_ForWeb.jpg" width="65px;" alt="James Zou"/>
+            <br />
+            <sub><b>James Zou</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://yejinc.github.io/">
+            <img src="https://yejinc.github.io/profile-uw-2022.jpeg" width="75px;" alt="Yejin Choi"/>
+            <br />
+            <sub><b>Yejin Choi</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://yuzhimanhua.github.io/">
+            <img src="https://yuzhimanhua.github.io/profile_pic.jpg" width="90px;" alt="Yu Zhang"/>
+            <br />
+            <sub><b>Yu Zhang</b></sub>
+        </a>
+    </td>
+</tr>
+</table>
+
 ## Acknowledgements
 
 We thank the following open-source projects:
