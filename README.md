@@ -3,8 +3,6 @@ PLEASE CHANGE THE ARXIV, REPO, AND OTEHR URL in `agentflow/pyproject.toml`
 # AgentFlow: In-The-Flow Agentic System Optimization for Effective Planning and Tool Use.
 
 ## Installation
-please revise the project path in `setup.sh`, if you are not currently at the root of the project, and then run:
-
 ```bash
 bash setup.sh
 source .venv/bin/activate
@@ -13,24 +11,8 @@ sudo apt-get update
 sudo apt-get install parallel
 ```
 
-Make .env file, and set `OPENAI_API_KEY`, `GOOGLE_API_KEY`, `GOOGLE_CX`, etc. For example:
-```text
-# The content of the .env file
+**Duplicate the `.env.template` file and rename it to `.env`, then set your own values for `OPENAI_API_KEY`, `GOOGLE_API_KEY`, `GOOGLE_CX`, `DASHSCOPE_API_KEY`.**
 
-# Used for LLM-powered modules and tools
-OPENAI_API_KEY=<your-api-key-here> # If you want to use OpenAI LLM
-DASHSCOPE_API_KEY=<your-api-key-here> # If you want to use Gemini LLM
-
-# Used for the Google Search tool
-GOOGLE_API_KEY=<your-api-key-here>
-GOOGLE_CX=<your-cx-here>
-
-# Used for the more custom llm-engine (Optional)
-TOGETHER_API_KEY=<your-api-key-here> # If you want to use TogetherAI LLM
-DEEPSEEK_API_KEY=<your-api-key-here> # If you want to use DeepSeek LLM
-XAI_API_KEY=<your-api-key-here> # If you want to use Grok LLM
-ANTHROPIC_API_KEY=<your-api-key-here> # If you want to use Anthropic LLM
-```
 
 ## Quick Start
 ### Dataset Preparation
@@ -42,7 +24,7 @@ python data/get_train_data.py
 python data/aime24_data.py
 ```
 
-The data dir should be:
+After that, data dir should be:
 ```
 data/
 ├── train/
@@ -53,7 +35,7 @@ data/
 └── get_train_data.py
 ```
 ### Train
-**Start training with tmux:**
+Start training with tmux:
 ```bash
 # Create tmux session and start agentflow service (Window 0)
 tmux new-session -s agentflow
@@ -63,7 +45,7 @@ bash train/serve_with_logs.sh
 bash train/train_with_logs.sh
 ```
 **Configuration:**
-All training hyperparameters are in `train/config.yaml` (model settings, tools, PPO parameters, resources, etc.)
+All training hyperparameters are in `train/config.yaml` (model settings, tools, RL parameters, resources, etc.)
 
 
 
