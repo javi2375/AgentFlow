@@ -69,6 +69,9 @@ cp .env_template .env
 ```
 
 ## Quick Start
+### (Optional) Test Your Environment
+Before diving in, we recommend verifying that your tools, LLM engines, and network configuration are properly set up. See [test_env.md](assets/doc/test_env.md) for detailed testing instructions.
+
 ### Dataset Preparation
 ```bash
 # train data

@@ -1,6 +1,9 @@
 ## Test your env before going on
 
-vplease run the following command to test all tools:
+Please ensure tools, engine and IP are properly configured before proceeding.
+
+### Test tools
+please run the following command to test all tools:
 
 ```bash
 cd agentflow/agentflow
@@ -32,12 +35,6 @@ Testing web_search...
 ✅ web_search passed
 
 ✅ All tests passed
-```
-
-### IP test
-test your public IP(just for saving the logs files)
-```bash
-python util/get_pub_ip.py
 ```
 
 ### LLM engine test
@@ -75,3 +72,10 @@ Example output:
 ============================================================
 🎉 Testing complete. Script did NOT crash despite errors.
 ```
+
+### IP test
+test your public IP(just for saving the logs files)
+```bash
+python util/get_pub_ip.py
+```
+
