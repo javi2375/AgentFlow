@@ -57,6 +57,7 @@ To run inference on benchmark tasks, first ensure your planner model is being se
 cd test
 bash exp/run_all_models_all_datasets.sh
 ```
+---
 
 
 
