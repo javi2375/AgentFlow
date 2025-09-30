@@ -19,8 +19,6 @@ Next, update the variables (`OPENAI_API_KEY`, `GOOGLE_API_KEY`, `GOOGLE_CX`, `DA
 cp .env_template .env
 ```
 
-
-
 ## Quick Start
 ### Dataset Preparation
 ```bash
@@ -41,7 +39,7 @@ data/
 └── get_train_data.py
 ```
 ### Train
-Start training with tmux:
+Start agentflow training with tmux:
 ```bash
 # Create tmux session and start agentflow service (Window 0)
 tmux new-session -s agentflow
@@ -53,143 +51,21 @@ bash train/train_with_logs.sh
 **Configuration:**
 All training hyperparameters are in `train/config.yaml` (model settings, tools, RL parameters, resources, etc.)
 
-
-
-
-
-
-
-
-
-
-
-## Test your env before going on
-
-vplease run the following command to test all tools:
-
-```bash
-cd agentflow/agentflow
-bash ./tools/test_all_tools.sh
-```
-
-A `test.log` will be saved in each tool's file. 
-
-Success example: 
-```text
-Testing all tools
-Tools:
-  - base_generator
-  - google_search
-  - python_coder
-  - web_search
-  - wikipedia_search
-
-Running tests in parallel...
-Testing base_generator...
-✅ base_generator passed
-Testing google_search...
-✅ google_search passed
-Testing python_coder...
-✅ python_coder passed
-Testing wikipedia_search...
-✅ wikipedia_search passed
-Testing web_search...
-✅ web_search passed
-
-✅ All tests passed
-```
-
-### IP test
-test your public IP(just for saving the logs files)
-```bash
-python util/get_pub_ip.py
-```
-
-### LLM engine test
-Please run the following command to test all LLM engines:
-
-```bash
-python agentflow/scripts/test_llm_engine.py
-```
-
-Example output:
-```text
-🚀 Starting fault-tolerant test for 11 engines...
-🧪 Testing: 'gpt-4o' | kwargs={}
-✅ Success: Created ChatOpenAI
-🧪 Testing: 'dashscope-qwen2.5-3b-instruct' | kwargs={}
-✅ Success: Created ChatDashScope
-🧪 Testing: 'gemini-1.5-pro' | kwargs={}
-✅ Success: Created ChatGemini
-============================================================
-📋 TEST SUMMARY
-============================================================
-✅ Passed: 3
-   • gpt-4o → ChatOpenAI
-   • dashscope-qwen2.5-3b-instruct → ChatDashScope
-   • gemini-1.5-pro → ChatGemini
-❌ Failed: 8
-   • azure-gpt-4 → 🚫 API key not found in environment
-   • claude-3-5-sonnet → 🚫 API key not found in environment
-   • deepseek-chat → 🚫 API key not found in environment
-   • grok → 🚫 API key not found in environment
-   • vllm-meta-llama/Llama-3-8b-instruct → 🚫 Connection failed
-   • together-meta-llama/Llama-3-70b-chat-hf → 🚫 API key not found
-   • ollama-llama3 → 🚫 Connection failed
-   • unknown-model-123 → 💥 Unexpected error
-============================================================
-🎉 Testing complete. Script did NOT crash despite errors.
-```
-
-## Quick Start
-### Train
-
-We recommend using `tmux` to manage the training process with two windows:
-
-1. **Create a tmux session with two windows:**
-```bash
-tmux new-session -s agentflow
-# This creates window 0 automatically
-```
-
-2. **In Window 0 - Start the VLLM serving:**
-```bash
-bash train/serve_with_logs.sh
-```
-This will start the VLLM server to serve your base model for rollout generation during training.
-
-3. **Create and switch to Window 1 - Start the training:**
-```bash
-# Press Ctrl+B then C to create a new window
-# Or manually: Ctrl+B then :new-window
-bash train/train_with_logs.sh
-```
-This will start the RL training process.
-
-**Switching between windows:**
-- `Ctrl+B` then `0` - Switch to window 0 (serving)
-- `Ctrl+B` then `1` - Switch to window 1 (training)
-- `Ctrl+B` then `D` - Detach from session
-- `tmux attach -t agentflow` - Reattach to session
-
-**Training hyperparameters:**
-
-You can customize training hyperparameters according to your needs. All configurations are defined in `train/config.yaml`, including:
-- Model settings (`BASE_MODEL`, `ROLLOUT_TP_SIZE`)
-- Tool configurations (`ENABLE_TOOLS`, `TOOL_ENGINE`)
-- Training parameters (batch size, learning rate, PPO settings)
-- Data paths and lengths
-- Resource allocation (GPUs, workers)
-
-For detailed parameter descriptions and tuning options, please refer to `train/config.yaml`.
-
 ### Infer
-
-To run inference on benchmark tasks, first ensure your model is being served via VLLM, then execute:
+To run inference on benchmark tasks, first ensure your planner model is being served via VLLM, then execute:
 ```bash
 cd test
 bash exp/run_all_models_all_datasets.sh
 ```
+
+
+
+
+
+
+
+
+
 
 **Serving models with VLLM:**
 
@@ -318,3 +194,94 @@ The models in `checkpoints/{PROJECT}/{EXPERIMENT}/global_step_X/actor/huggingfac
 2. **Direct loading**: Standard HuggingFace Transformers `from_pretrained()`
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+## Test your env before going on
+
+vplease run the following command to test all tools:
+
+```bash
+cd agentflow/agentflow
+bash ./tools/test_all_tools.sh
+```
+
+A `test.log` will be saved in each tool's file. 
+
+Success example: 
+```text
+Testing all tools
+Tools:
+  - base_generator
+  - google_search
+  - python_coder
+  - web_search
+  - wikipedia_search
+
+Running tests in parallel...
+Testing base_generator...
+✅ base_generator passed
+Testing google_search...
+✅ google_search passed
+Testing python_coder...
+✅ python_coder passed
+Testing wikipedia_search...
+✅ wikipedia_search passed
+Testing web_search...
+✅ web_search passed
+
+✅ All tests passed
+```
+
+### IP test
+test your public IP(just for saving the logs files)
+```bash
+python util/get_pub_ip.py
+```
+
+### LLM engine test
+Please run the following command to test all LLM engines:
+
+```bash
+python agentflow/scripts/test_llm_engine.py
+```
+
+Example output:
+```text
+🚀 Starting fault-tolerant test for 11 engines...
+🧪 Testing: 'gpt-4o' | kwargs={}
+✅ Success: Created ChatOpenAI
+🧪 Testing: 'dashscope-qwen2.5-3b-instruct' | kwargs={}
+✅ Success: Created ChatDashScope
+🧪 Testing: 'gemini-1.5-pro' | kwargs={}
+✅ Success: Created ChatGemini
+============================================================
+📋 TEST SUMMARY
+============================================================
+✅ Passed: 3
+   • gpt-4o → ChatOpenAI
+   • dashscope-qwen2.5-3b-instruct → ChatDashScope
+   • gemini-1.5-pro → ChatGemini
+❌ Failed: 8
+   • azure-gpt-4 → 🚫 API key not found in environment
+   • claude-3-5-sonnet → 🚫 API key not found in environment
+   • deepseek-chat → 🚫 API key not found in environment
+   • grok → 🚫 API key not found in environment
+   • vllm-meta-llama/Llama-3-8b-instruct → 🚫 Connection failed
+   • together-meta-llama/Llama-3-70b-chat-hf → 🚫 API key not found
+   • ollama-llama3 → 🚫 Connection failed
+   • unknown-model-123 → 💥 Unexpected error
+============================================================
+🎉 Testing complete. Script did NOT crash despite errors.
+```
+
+## Quick Start
