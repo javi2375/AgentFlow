@@ -101,7 +101,7 @@ bash train/train_with_logs.sh
 All training hyperparameters are in `train/config.yaml` (model settings, tools, RL parameters, resources, etc.)
 
 ### AgentFlow Inference
-Serve the trained planner model with VLLM (here we deploy our 7B Flow-GRPO planner model).:
+Serve the trained planner model with VLLM (here we deploy our 7B Flow-GRPO planner model):
 ```bash
 bash scripts/serve_vllm.sh
 ```
@@ -111,6 +111,43 @@ Run inference on benchmark tasks:
 cd test
 bash exp/run_all_models_all_datasets.sh
 ```
+
+## Core Contributors
+
+<table>
+<tr>
+    <td align="center">
+        <a href="https://zhuofeng-li.github.io/">
+            <img src="https://github.com/Zhuofeng-Li.png" width="75px;" alt="Zhuofeng Li"/>
+            <br />
+            <sub><b>Zhuofeng Li</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/IsaacGHX">
+            <img src="https://github.com/IsaacGHX.png" width="75px;" alt="HaoXiang Zhang"/>
+            <br />
+            <sub><b>HaoXiang Zhang</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://lupantech.github.io/">
+            <img src="https://github.com/lupantech.png" width="75px;" alt="Pan Lu"/>
+            <br />
+            <sub><b>Pan Lu</b></sub>
+        </a>
+    </td>
+</tr>
+</table>
+
+## Acknowledgements
+
+We thank the following open-source projects:
+- [verl](https://github.com/volcengine/verl) for the excellent RL framework design.
+- [VLLM](https://github.com/vllm-project/vllm) for fast LLM inference support.
+- [agent-lightning](https://github.com/microsoft/agent-lightning) for early-stage exploration in agentic RL Training. 
+
+We thank [Lambda](https://lambda.ai/careers) for GPU support!
 
 
 
