@@ -13,8 +13,7 @@ sudo apt-get install parallel
 ```
 
 ### Setup Environment Variables
-Duplicate the `.env.template` file and rename it to `.env`.  
-Next, update the variables (`OPENAI_API_KEY`, `GOOGLE_API_KEY`, `GOOGLE_CX`, `DASHSCOPE_API_KEY`) with your own keys.  
+Duplicate the `.env.template` file and rename it to `.env`. Next, update the variables (`OPENAI_API_KEY`, `GOOGLE_API_KEY`, `GOOGLE_CX`, `DASHSCOPE_API_KEY`) with your own keys.  
 ```
 cp .env_template .env
 ```
