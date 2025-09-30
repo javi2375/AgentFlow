@@ -19,7 +19,7 @@ AgentFlow: In-The-Flow Agentic System Optimization for Effective Planning and To
 <a href=""><b>Twitter</b></a> |
   <a href="https://deepwiki.com/lupantech/AgentFlow"><b>DeepWiki</b></a> |
   <a href=""><b>WeChat Group</b></a> |
-  <a href=""><b>Slack</b></a>
+  <a href="https://join.slack.com/t/agentflowco/shared_invite/zt-3f1bmai74-1CaZfpgkhRU061lYaH4zqQ"><b>Slack</b></a>
 |
 </p>
 
@@ -148,6 +148,23 @@ We thank the following open-source projects:
 - [agent-lightning](https://github.com/microsoft/agent-lightning) for early-stage exploration in agentic RL Training. 
 
 We thank [Lambda](https://lambda.ai/careers) for GPU support!
+
+## Contributors
+
+We are truly looking forward to open-source contributions to AgentFlow!  If you’re interested in contributing, collaborating, or reporting issues, please feel free to open an issue or submit a pull request (PR).  You can also reach us at [zhuofengli12345@gmail.com](mailto:zhuofengli12345@gmail.com) or join our Slack community: [AgentFlow](https://join.slack.com/t/agentflowco/shared_invite/zt-3f1bmai74-1CaZfpgkhRU061lYaH4zqQ).
+
+
+We are also looking forward to your feedback and suggestions!
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=lupantech/AgentFlow&type=Date)](https://www.star-history.com/#lupantech/AgentFlow&Date)
+
+<p align="right" style="font-size: 14px; color: #2176bc; margin-top: 20px;">
+  <a href="#readme-top" style="text-decoration: none; color: blue; font-weight: bold;">
+    ↑ Back to Top ↑
+  </a>
+</p>
 
 
 
