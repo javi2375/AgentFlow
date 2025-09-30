@@ -2,7 +2,8 @@ PLEASE CHANGE THE ARXIV, REPO, AND OTEHR URL in `agentflow/pyproject.toml`
 
 # AgentFlow: In-The-Flow Agentic System Optimization for Effective Planning and Tool Use.
 
-## Installation
+## Setup
+### Installation
 ```bash
 bash setup.sh
 source .venv/bin/activate
@@ -11,12 +12,17 @@ sudo apt-get update
 sudo apt-get install parallel
 ```
 
-**Duplicate the `.env.template` file and rename it to `.env`, then set your own values for `OPENAI_API_KEY`, `GOOGLE_API_KEY`, `GOOGLE_CX`, `DASHSCOPE_API_KEY`.**
+### Setup Environment Variables
+Duplicate the `.env.template` file and rename it to `.env`.  
+Next, update the variables (`OPENAI_API_KEY`, `GOOGLE_API_KEY`, `GOOGLE_CX`, `DASHSCOPE_API_KEY`) with your own keys.  
+```
+cp .env_template .env
+```
+
 
 
 ## Quick Start
 ### Dataset Preparation
-Please run the following commands to fetch the data:
 ```bash
 # train data
 python data/get_train_data.py
