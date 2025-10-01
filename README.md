@@ -127,10 +127,10 @@ bash exp/run_all_models_all_datasets.sh
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/IsaacGHX">
-            <img src="https://github.com/IsaacGHX.png" width="75px;" alt="HaoXiang Zhang"/>
+        <a href="https://isaacghx.github.io/about/">
+            <img src="https://github.com/IsaacGHX.png" width="75px;" alt="Haoxiang Zhang"/>
             <br />
-            <sub><b>HaoXiang Zhang</b></sub>
+            <sub><b>Haoxiang Zhang</b></sub>
         </a>
     </td>
     <td align="center">
