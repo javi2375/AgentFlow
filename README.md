@@ -90,8 +90,8 @@ data/
 ├── aime24_data.py
 └── get_train_data.py
 ```
-### AgentFlow Train
-Start agentflow training with tmux:
+### Flow-GRPO Training
+Start agentflow training using Flow-GRPO with tmux:
 ```bash
 # Create tmux session and start agentflow service (Window 0)
 tmux new-session -s agentflow
@@ -120,9 +120,19 @@ bash exp/run_all_models_all_datasets.sh
 
 You can find more benchmarking details in [benchmark.md](assets/doc/benchmark.md). 
 
-## Use your own model in AgentFlow 
+## Use Your Own Model in AgentFlow
 
+AgentFlow supports different LLM engines for each agent module. See [llm_engine.md](assets/doc/llm_engine.md) for supported models and [`factory.py`](agentflow/agentflow/engine/factory.py) for the corresponding `model_string` configuration:
 
+**Planner Agent:**
+- Modify the `llm_engine_name` parameter in [`test/exp/run_all_models_all_datasets.sh`](test/exp/run_all_models_all_datasets.sh)
+
+**Other Agents (Executor, Verifier, Generator):**
+- By default, these agents use a fixed LLM engine (Qwen-2.5-7B-Instruct via DashScope)
+- To use your own model, modify `self.llm_engine_fixed` in [`agentflow/agentflow/models/planner.py:19`](agentflow/agentflow/models/planner.py#L19):
+```python
+self.llm_engine_fixed = create_llm_engine(model_string="your-engine", is_multimodal=False, temperature=temperature)
+```
 
 ## Core Contributors
 
