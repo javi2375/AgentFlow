@@ -6,6 +6,10 @@ def create_llm_engine(model_string: str, use_cache: bool = False, is_multimodal:
     print(f"Creating LLM engine for model: {model_string}")
     """
     Factory function to create appropriate LLM engine instance.
+
+    For supported models and model_string examples, see:
+    https://github.com/lupantech/AgentFlow/blob/main/assets/doc/llm_engine.md
+
     - Uses kwargs.get() instead of setdefault
     - Only passes supported parameters to each backend
     - Handles frequency_penalty, presence_penalty, repetition_penalty per backend
