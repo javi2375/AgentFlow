@@ -116,7 +116,37 @@ bash exp/run_all_models_all_datasets.sh
 
 You can find more benchmarking details in [benchmark.md](assets/doc/benchmark.md). 
 
-### Train with Flow-GRPO
+### Use Your Own Model in AgentFlow
+
+AgentFlow supports different LLM engines for each agent module. See [llm_engine.md](assets/doc/llm_engine.md) for supported models and [`factory.py`](agentflow/agentflow/engine/factory.py) for the corresponding `model_string` configuration:
+
+**Planner Agent:**
+- Modify the `llm_engine_name` parameter in [`test/exp/run_all_models_all_datasets.sh`](test/exp/run_all_models_all_datasets.sh)
+
+**Other Agents (Executor, Verifier, Generator):**
+- By default, these agents use a fixed LLM engine (Qwen-2.5-7B-Instruct via DashScope)
+- To use your own model, modify `self.llm_engine_fixed` in [`agentflow/agentflow/models/planner.py:19`](agentflow/agentflow/models/planner.py#L19):
+```python
+self.llm_engine_fixed = create_llm_engine(model_string="your-engine", is_multimodal=False, temperature=temperature)
+```
+and
+
+- Modify the `llm_engine_name` parameter in the Executor instantiation from [`agentflow/agentflow/solver.py:232`](agentflow/agentflow/solver.py#L232):
+```python
+# Instantiate Executor
+executor = Executor(
+    # llm_engine_name=llm_engine_name,
+    llm_engine_name="dashscope",
+    root_cache_dir=root_cache_dir,
+    verbose=verbose,
+    # base_url=base_url,
+    temperature=temperature
+)
+```
+- For detailed information on supported engines and `model_string` formats, see [`llm_engine.md`](assets/doc/llm_engine.md)
+
+
+## Train Your *Action Planner* with Flow-GRPO
 Start agentflow training using Flow-GRPO with tmux:
 ```bash
 # Create tmux session and start agentflow service (Window 0)
@@ -133,20 +163,7 @@ We provide a comprehensive logging to monitor training. See [logs.md](assets/doc
 All training hyperparameters are in [`train/config.yaml`](train/config.yaml) (model settings, tools, RL parameters, resources, etc.)
 
 
-## Use Your Own Model in AgentFlow
 
-AgentFlow supports different LLM engines for each agent module. See [llm_engine.md](assets/doc/llm_engine.md) for supported models and [`factory.py`](agentflow/agentflow/engine/factory.py) for the corresponding `model_string` configuration:
-
-**Planner Agent:**
-- Modify the `llm_engine_name` parameter in [`test/exp/run_all_models_all_datasets.sh`](test/exp/run_all_models_all_datasets.sh)
-
-**Other Agents (Executor, Verifier, Generator):**
-- By default, these agents use a fixed LLM engine (Qwen-2.5-7B-Instruct via DashScope)
-- To use your own model, modify `self.llm_engine_fixed` in [`agentflow/agentflow/models/planner.py:19`](agentflow/agentflow/models/planner.py#L19):
-```python
-self.llm_engine_fixed = create_llm_engine(model_string="your-engine", is_multimodal=False, temperature=temperature)
-```
-- For detailed information on supported engines and `model_string` formats, see [`llm_engine.md`](assets/doc/llm_engine.md)
 
 ## Core Contributors
 

@@ -336,6 +336,7 @@ if __name__ == "__main__":
     # tool = Python_Coder_Tool(model_string="gpt-4o-mini") # NOTE: strong LLM for tool
     # tool = Python_Coder_Tool(model_string="gemini-1.5-flash") # NOTE: weak 8B model for tool
     tool = Python_Coder_Tool(model_string="dashscope") # NOTE: weak Qwen2.5-7B model for tool
+    # tool = Python_Coder_Tool(model_string="together-Qwen/Qwen2.5-7B-Instruct") # NOTE: weak Qwen2.5-7B model for tool
 
     # Get tool metadata
     metadata = tool.get_metadata()

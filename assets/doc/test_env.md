@@ -1,9 +1,20 @@
+**Please ensure your .env file is in the agentflow directory, and make sure the following API keys are configured:**
+- `OPENAI_API_KEY` (used for RAG summary in tools)
+- `GOOGLE_API_KEY` (for Google Search tool)
+- `DASHSCOPE_API_KEY` (for calling Qwen-2.5-7B-Instruct - recommended for China/Singapore users)
+
+**If you are not using these three default APIs, please adjust them in the corresponding locations.**
+
+For example: adjust the model in [`tools/base_generator/tool.py`](../../agentflow/agentflow/tools/base_generator/tool.py) to `together-Qwen/Qwen2.5-7B-Instruct`
+
+---
+
 ## Test your env before going on
 
 Please ensure tools, engine and IP are properly configured before proceeding.
 
 ### Test tools
-please run the following command to test all tools:
+please run the following command to test all tools: 
 
 ```bash
 cd agentflow/agentflow
@@ -41,6 +52,7 @@ Testing web_search...
 Please run the following command to test all LLM engines:
 
 ```bash
+cd PROJECT_ROOT
 python agentflow/scripts/test_llm_engine.py
 ```
 
@@ -76,6 +88,7 @@ Example output:
 ### IP test
 test your public IP(just for saving the logs files)
 ```bash
+cd PROJECT_ROOT
 python util/get_pub_ip.py
 ```
 
