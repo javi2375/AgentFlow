@@ -80,8 +80,8 @@ sudo apt-get install parallel
 Copy the `.env.template` file from `agentflow/.env.template` and rename it to `.env`, then place it in the `agentflow/` folder. Update the following variables with your own API keys:
 - `OPENAI_API_KEY` (for judging reasponse)
 - `GOOGLE_API_KEY` (for Google Search tool)
-- `DASHSCOPE_API_KEY` (for calling Qwen-2.5-7B-Instruct as engine for agents and tools - recommended for China/Singapore users)
-- `TOGETHER_API_KEY` (alternative for calling Qwen-2.5-7B-Instruct - recommended for international users)
+- `DASHSCOPE_API_KEY` (for calling Qwen-2.5-7B-Instruct as engine for agents and tools)
+- `TOGETHER_API_KEY` (alternative for calling Qwen-2.5-7B-Instruct as engine for agents and tools - recommended for international users)
 - More ways: serve Qwen2.5-7B-instruct model with vLLM (details refer to [`serve_vllm_local.md`](assets/doc/serve_vllm_local.md)).
 
 Please check [API Key Setup Guide](assets/doc/api_key.md) for detailed instructions on how to obtain these keys.
