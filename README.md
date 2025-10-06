@@ -67,7 +67,7 @@ Explore more in our [paper](#) or [project page](https://agentflow.stanford.edu/
 ---
 
 ## 📑 Table of Contents
- - [⚙️ Setup](#️-setup)
+- [⚙️ Setup](#️-setup)
   - [Installation](#installation)
   - [Setup Environment Variables](#setup-environment-variables)
 - [⚡ Quick Start on AgentFlow Inference](#-quick-start-on-agentflow-inference)
@@ -75,8 +75,8 @@ Explore more in our [paper](#) or [project page](https://agentflow.stanford.edu/
   - [(Optional) Test Your Environment](#optional-test-your-environment)
   - [Dataset Preparation](#dataset-preparation)
   - [Flow-GRPO Training](#flow-grpo-training)
-  - [AgentFlow Benchmark](#agentflow-benchmark)
-  - [Use Your Own Model in AgentFlow](#use-your-own-model-in-agentflow)
+- [🎯 AgentFlow Benchmark](#-agentflow-benchmark)
+- [🧩 Use Your Own Model in AgentFlow](#-use-your-own-model-in-agentflow)
 - [👋 Core Contributors](#-core-contributors)
 - [🎓 Advisors](#-advisors)
 - [🙏 Acknowledgements](#-acknowledgements)
@@ -179,7 +179,7 @@ We provide a comprehensive logging to monitor training. See [logs.md](assets/doc
 
 
 
-### AgentFlow Benchmark 
+## 🎯 AgentFlow Benchmark 
 Serve the trained planner model with VLLM (here we deploy our [7B Flow-GRPO planner model](https://huggingface.co/AgentFlow/agentflow-planner-7b)):
 ```bash
 bash scripts/serve_vllm.sh
@@ -193,7 +193,7 @@ bash exp/run_all_models_all_datasets.sh
 
 You can find more benchmarking details in [benchmark.md](assets/doc/benchmark.md). 
 
-### Use Your Own Model in AgentFlow
+## 🧩 Use Your Own Model in AgentFlow
 
 AgentFlow supports different LLM engines for each agent module. See [llm_engine.md](assets/doc/llm_engine.md) for supported models and [`factory.py`](agentflow/agentflow/engine/factory.py) for the corresponding `model_string` configuration:
 
