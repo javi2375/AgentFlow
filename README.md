@@ -15,7 +15,7 @@ AgentFlow: In-The-Flow Agentic System Optimization for Effective Planning and To
 | 
 <a href=""><b>Website</b></a> |
 <a href=""><b>Paper</b></a> |
-<a href="https://huggingface.co/agentflow"><b>Huggingface</b></a> |
+<a href="https://huggingface.co/AgentFlow"><b>Huggingface</b></a> |
 <a href=""><b>Twitter</b></a> |
   <a href="https://deepwiki.com/lupantech/AgentFlow"><b>DeepWiki</b></a> |
   <a href=""><b>WeChat Group</b></a> |
