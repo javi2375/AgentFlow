@@ -53,7 +53,8 @@ For effective planning and tool use, the framework directly **optimizes planner 
 
 💡 Even surpasses larger proprietary models like **GPT-4o (~200B)**.
 
-![main_table](assets/img/main_table.png)
+![main_table1](assets/img/maintable1.png)
+![main_table2](assets/img/maintable2.png)
 
 ### 🔍 In-Depth Analysis
 - Improved planning and decision-making  
