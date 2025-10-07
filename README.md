@@ -77,11 +77,10 @@ Explore more in our [paper](#) or [project page](https://agentflow.stanford.edu/
   - [Flow-GRPO Training](#flow-grpo-training)
 - [🎯 AgentFlow Benchmark](#-agentflow-benchmark)
 - [🧩 Use Your Own Model in AgentFlow](#-use-your-own-model-in-agentflow)
-- [👋 Core Contributors](#-core-contributors)
+- [🤝 Core Contributors](#-core-contributors)
 - [🎓 Advisors](#-advisors)
 - [🙏 Acknowledgements](#-acknowledgements)
-- [🤝 Contributing](#-contributing)
-- [🚀 Star History](#-star-history)
+- [🚀 Contributing](#-contributing)
 
 ## ⚙️ Setup
 ### Installation
@@ -288,16 +287,12 @@ We thank the following open-source projects:
 
 We thank [Lambda](https://lambda.ai/careers) for GPU support!
 
-## 👋 Contributing
+## 🚀 Contributing
 
 We are truly looking forward to open-source contributions to AgentFlow!  If you’re interested in contributing, collaborating, or reporting issues, please feel free to open an issue or submit a pull request (PR).  You can also reach us at [zhuofengli12345@gmail.com](mailto:zhuofengli12345@gmail.com) or join our Slack community: [AgentFlow](https://join.slack.com/t/agentflowco/shared_invite/zt-3f1bmai74-1CaZfpgkhRU061lYaH4zqQ).
 
 
 We are also looking forward to your feedback and suggestions!
-
-## 🚀 Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=lupantech/AgentFlow&type=Date)](https://star-history.com/#lupantech/AgentFlow&Date)
 
 <p align="right" style="font-size: 14px; margin-top: 20px;">
   <a href="#readme-top" style="text-decoration: none; font-weight: bold;">
