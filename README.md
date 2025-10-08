@@ -17,9 +17,10 @@ AgentFlow: In-the-Flow Agentic System Optimization for Effective Planning and To
     <a href="https://arxiv.org/abs/2510.05592"><img src="https://img.shields.io/badge/arXiv-2510.05592-B31B1B.svg?logo=arxiv" alt="Arxiv"></a>
     <a href="https://huggingface.co/spaces/AgentFlow/agentflow"><img src="https://img.shields.io/badge/Gradio-Demo-F97316.svg?logo=gradio" alt="Gradio Demo"></a>
     <a href="https://huggingface.co/AgentFlow"><img src="https://img.shields.io/badge/Huggingface-Model-FFD21E.svg?logo=huggingface" alt="Huggingface Model"></a>
+    <a href="https://huggingface.co/papers/2510.05592"><img src="https://img.shields.io/badge/Huggingface-Model-FFD21E.svg?logo=huggingface" alt="Huggingface Paper"></a>
     <a href="https://agentflow.stanford.edu/"><img src="https://img.shields.io/badge/Website-AgentFlow-E5426E?logo=kashflow" alt="Website"></a>
     <a href=""><img src="https://img.shields.io/badge/Coverage-AgentFlow-2176BC.svg?logo=x" alt="X"></a>
-    <a href="https://agentflowco.slack.com/ssb/redirect"><img src="https://img.shields.io/badge/Slack-AgentFlow-D41544.svg?logo=slack" alt="Slack"></a>
+    <a href="https://join.slack.com/t/agentflow-co/shared_invite/zt-3f712xngl-LfxS4gmftAeKvcxR3nSkWQ"><img src="https://img.shields.io/badge/Slack-AgentFlow-D41544.svg?logo=slack" alt="Slack"></a>
   </p>
 <!--- BADGES: END --->
 
@@ -38,9 +39,9 @@ For effective planning and tool use, the framework directly **optimizes planner 
 ## 🚀 Key Features
 
 - 🧩 **Modular Agentic System** – Four specialized agent modules (**Planner**, **Executor**, **Verifier**, **Generator**) that coordinate via evolving memory and integrated tools across multiple turns.  
-- 🔗 **Multi-Tool Integration** – Seamlessly connect with diverse tool ecosystems, including **base_generator**, **python_coder**, **google_search**, **wikipedia_search**, **web_search**, and more.  
+- 🔗 **Multi-Tool Integration** – Seamlessly connect with diverse tool ecosystems, including `base_generator`, `python_coder`, `google_search`, `wikipedia_search`, `web_search`, and more.  
 - 🎯 **Flow-GRPO Algorithm** – Enables **in-the-flow agent optimization** for **long-horizon reasoning tasks** with sparse rewards.
-- 📈 **Proven Results** – **AgentFlow (7B Backbone)** beats top baselines on 10 benchmarks, with **+14.9% search**, **+14.0% agentic**, **+14.5% math**, **+4.1% science**, even **outperforming GPT-4o**.
+- 📈 **Proven Results** – **AgentFlow (7B Backbone)** beats top baselines on 10 benchmarks, with **+14.9% search**, **+14.0% agentic**, **+14.5% math**, **+4.1% science**, even outperforming ~200B-parameter **GPT-4o**.
 
 ## 🏆 Experiments
 
@@ -290,18 +291,18 @@ We thank [Lambda](https://lambda.ai/careers) for GPU support!
 
 ## 🚀 Contributing
 
-We are truly looking forward to open-source contributions to AgentFlow!  If you’re interested in contributing, collaborating, or reporting issues, please feel free to open an issue or submit a pull request (PR).  You can also reach us at [zhuofengli12345@gmail.com](mailto:zhuofengli12345@gmail.com) or join our Slack community: [AgentFlow](https://join.slack.com/t/agentflowco/shared_invite/zt-3f1bmai74-1CaZfpgkhRU061lYaH4zqQ).
+We are truly looking forward to open-source contributions to AgentFlow!  If you’re interested in contributing, collaborating, or reporting issues, please feel free to open an issue or submit a pull request (PR).  You can also reach us at [zhuofengli12345@gmail.com](mailto:zhuofengli12345@gmail.com), [isaacpfino@gmail.com](mailto:isaacpfino@gmail.com), [lupantech@gmail.com](mailto:lupantech@gmail.com) or join our Slack community: [AgentFlow](https://join.slack.com/t/agentflow-co/shared_invite/zt-3f712xngl-LfxS4gmftAeKvcxR3nSkWQ).
 
 
 We are also looking forward to your feedback and suggestions!
 
 ## 📚 Citation
 ```bibtex
-@article{li2025intheflowagenticoptimizationeffective,
-      author={Zhuofeng Li and Haoxiang Zhang and Seungju Han and Sheng Liu and Jianwen Xie and Yu Zhang and Yejin Choi and James Zou and Pan Lu},
-      title={In-the-Flow Agentic System Optimization for Effective Planning and Tool Use}, 
-      journal = {arXiv preprint arXiv:2510.05592},
-      year = {2025}
+@article{li2025intheflow,
+    title = {In-the-Flow Agentic System Optimization for Effective Planning and Tool Use},
+    author = {Li, Zhuofeng and Zhang, Haoxiang and Han, Seungju and Liu, Sheng and Xie, Jianwen and Zhang, Yu and Choi, Yejin and Zou, James and Lu, Pan},
+    journal = {arXiv preprint arXiv:2510.05592},
+    year = {2025}
 }
 ```
 
