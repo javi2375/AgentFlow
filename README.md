@@ -3,7 +3,7 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/img/logo.png">
-    <img alt="AgentFlow" src="assets/img/logo.svg" width=31%>
+    <img alt="AgentFlow" src="assets/img/logo.png" width=31%>
   </picture>
 </p>
 
