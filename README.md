@@ -14,7 +14,7 @@ AgentFlow: In-the-Flow Agentic System Optimization for Effective Planning and To
 
 <!--- BADGES: START --->
 <p align="center">
-    <a href=""><img src="https://img.shields.io/badge/arXiv-2502.11271-B31B1B.svg?logo=arxiv" alt="Arxiv"></a>
+    <a href="https://arxiv.org/abs/2510.05592"><img src="https://img.shields.io/badge/arXiv-2502.11271-B31B1B.svg?logo=arxiv" alt="Arxiv"></a>
     <a href="https://huggingface.co/spaces/AgentFlow/agentflow"><img src="https://img.shields.io/badge/Gradio-Demo-F97316.svg?logo=gradio" alt="Gradio Demo"></a>
     <a href="https://huggingface.co/AgentFlow"><img src="https://img.shields.io/badge/Huggingface-Model-FFD21E.svg?logo=huggingface" alt="Huggingface Model"></a>
     <a href="https://agentflow.stanford.edu/"><img src="https://img.shields.io/badge/Website-AgentFlow-E5426E?logo=kashflow" alt="Website"></a>
@@ -61,7 +61,7 @@ For effective planning and tool use, the framework directly **optimizes planner 
 - Enhanced tool-calling reliability  
 - Positive scaling trends with model size & reasoning turns  
 
-Explore more in our [paper](#) or [project page](https://agentflow.stanford.edu/).
+Explore more in our [paper](https://arxiv.org/abs/2510.05592) or [project page](https://agentflow.stanford.edu/).
 
 ![tool_call](assets/img/tool_call.png)
 
