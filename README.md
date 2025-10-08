@@ -297,14 +297,11 @@ We are also looking forward to your feedback and suggestions!
 
 ## 📚 Citation
 ```bibtex
-@misc{li2025intheflowagenticoptimizationeffective,
-      title={In-the-Flow Agentic System Optimization for Effective Planning and Tool Use}, 
-      author={Zhuofeng Li and Haoxiang Zhang and Seungju Han and Sheng Liu and Jianwen Xie and Yu Zhang and Yejin Choi and James Zou and Pan Lu},
-      year={2025},
-      eprint={2510.05592},
-      archivePrefix={arXiv},
-      primaryClass={cs.AI},
-      url={https://arxiv.org/abs/2510.05592}, 
+@article{lu2025octotools,
+    author = {Lu, Pan and Chen, Bowen and Liu, Sheng and Thapa, Rahul and Boen, Joseph and Zou, James},
+    title = {OctoTools: An Agentic Framework with Extensible Tools for Complex Reasoning},
+    journal = {arXiv preprint arXiv:2502.11271},
+    year = {2025}
 }
 ```
 
