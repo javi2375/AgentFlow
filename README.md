@@ -29,6 +29,11 @@ AgentFlow: In-the-Flow Agentic System Optimization for Effective Planning and To
 <!--- BADGES: END --->
 
 
+## 📰 News
+- **Oct. 10, 2025** - Our X [post](https://x.com/lupantech/status/1976016000345919803) received 1K+ likes!
+- **Oct. 8, 2025** - Featured as Huggingface [Daily Paper #2](https://huggingface.co/papers/2510.05592)
+- **Oct. 7, 2025** - [Paper](https://arxiv.org/abs/2510.05592) released on arXiv
+
 ## 🌟 Why AgentFlow?
 AgentFlow is a **trainable, tool-integrated agentic framework** designed to overcome the **scalability** and **generalization limits** of today’s tool-augmented reasoning approaches.  
 
@@ -39,6 +44,11 @@ Unlike prevailing approaches such as [Search-R1](https://github.com/PeterGriffin
 For effective planning and tool use, the framework directly **optimizes planner agent within the system** in an **online fashion** using **Flow-based Group Refined Policy Optimization (Flow-GRPO)**, achieving superior performance across diverse domains with improved tool-calling reliability and long-horizon reasoning capabilities.
 
 ![flow_grpo](assets/img/flow_grpo.png)
+
+## 📺 YouTube Tutorial
+Excited to have a tutorial video for AgentFlow covered by [Discover AI](https://www.youtube.com/@code4AI) on YouTube!
+
+[![AgentFlow Tutorial](https://img.youtube.com/vi/kIQbCQIH1SI/0.jpg)](https://www.youtube.com/watch?v=kIQbCQIH1SI)
 
 ## 🚀 Key Features
 
