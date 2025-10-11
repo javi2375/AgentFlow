@@ -31,10 +31,10 @@ AgentFlow: In-the-Flow Agentic System Optimization for Effective Planning and To
 
 ## 📣 News
 - **[2025.10.10]** 🚀 Our X [post](https://x.com/lupantech/status/1976016000345919803) received 1K+ likes! Feel free to check out the post and join the discussion! 💬
-- **[2025.10.8]** 🔥 We are honored to be featured as 🤗 HuggingFace **[Daily Paper #2](https://huggingface.co/papers/2510.05592)**.
+- **[2025.10.08]** 🔥 We are honored to be featured as 🤗 HuggingFace **[Daily Paper #2](https://huggingface.co/papers/2510.05592)**.
 
 ## 🌟 Why AgentFlow?
-AgentFlow is a **trainable, tool-integrated agentic framework** designed to overcome the **scalability** and **generalization limits** of today’s tool-augmented reasoning approaches.  
+AgentFlow is a **trainable, tool-integrated agentic framework** designed to overcome the **scalability** and **generalization limits** of today’s tool-augmented reasoning approaches. 
 
 Unlike prevailing approaches such as [Search-R1](https://github.com/PeterGriffinJin/Search-R1) which train a **single LLM** to interleave reasoning steps with tool calls, **AgentFlow** introduces a **modular agentic system** with four specialized modules: 🧭 **Planner**, 🛠 **Executor**, ✅ **Verifier**, and ✍️ **Generator**.
 
@@ -47,7 +47,14 @@ For effective planning and tool use, the framework directly **optimizes planner 
 ## 📺 YouTube Tutorial
 Excited to have a tutorial video for AgentFlow covered by [Discover AI](https://www.youtube.com/@code4AI) on YouTube!
 
-[![AgentFlow Tutorial](https://img.youtube.com/vi/kIQbCQIH1SI/0.jpg)](https://www.youtube.com/watch?v=kIQbCQIH1SI)
+<!-- [![AgentFlow Tutorial](https://img.youtube.com/vi/kIQbCQIH1SI/0.jpg)](https://www.youtube.com/watch?v=kIQbCQIH1SI) -->
+
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=kIQbCQIH1SI">
+    <img src="https://img.youtube.com/vi/kIQbCQIH1SI/maxresdefault.jpg" alt="AgentFlow Tutorial" width="100%">
+  </a>
+</div>
+
 
 ## 🚀 Key Features
 
