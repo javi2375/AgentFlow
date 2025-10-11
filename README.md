@@ -31,7 +31,7 @@ AgentFlow: In-the-Flow Agentic System Optimization for Effective Planning and To
 
 ## 📣 News
 - **[2025.10.10]** 🚀 Our X [post](https://x.com/lupantech/status/1976016000345919803) received 1K+ likes! Feel free to check out the post and join the discussion! 💬
-- **[2025.10.10]** 🔥 We are honored to be featured as 🤗 HuggingFace **[Daily Paper #2](https://huggingface.co/papers/2510.05592)**.
+- **[2025.10.8]** 🔥 We are honored to be featured as 🤗 HuggingFace **[Daily Paper #2](https://huggingface.co/papers/2510.05592)**.
 
 ## 🌟 Why AgentFlow?
 AgentFlow is a **trainable, tool-integrated agentic framework** designed to overcome the **scalability** and **generalization limits** of today’s tool-augmented reasoning approaches.  
