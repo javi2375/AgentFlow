@@ -231,7 +231,7 @@ def construct_solver(llm_engine_name : str = "gpt-4o",
     # Instantiate Executor
     executor = Executor(
         # llm_engine_name=llm_engine_name,
-        llm_engine_name="dashscope",
+        llm_engine_name="lmstudio",
         root_cache_dir=root_cache_dir,
         verbose=verbose,
         # base_url=base_url,

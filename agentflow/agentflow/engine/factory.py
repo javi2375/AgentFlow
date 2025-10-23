@@ -141,6 +141,22 @@ def create_llm_engine(model_string: str, use_cache: bool = False, is_multimodal:
         print("serving ")
         return ChatVLLM(**config)
 
+    # === LM Studio ===
+    elif "lmstudio" in model_string:
+        from .lmstudio import ChatLMStudio
+
+        model_string = model_string.replace("lmstudio-", "")
+        config = {
+            "model_string": model_string,
+            "use_cache": use_cache,
+            "is_multimodal": is_multimodal,
+            "temperature": kwargs.get("temperature", 0.7),
+            "top_p": kwargs.get("top_p", 0.9),
+            # Allow override via kwargs, otherwise fall back to env var or default
+            "base_url": kwargs.get("base_url", os.environ.get("LMSTUDIO_BASE_URL", "http://localhost:1234/v1")),
+        }
+        return ChatLMStudio(**config)
+
     # === LiteLLM ===
     elif "litellm" in model_string:
         from .litellm import ChatLiteLLM

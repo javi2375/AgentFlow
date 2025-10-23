@@ -14,4 +14,17 @@ We support a broad range of LLM engines for agents and tools in [`factory.py`](.
 | Gemini | `gemini-2.0-flash` | `gemini-1.5-pro`, `gemini-1.5-flash-8b`, `gemini-1.5-flash`, `gemini-2.0-flash-lite`, `gemini-2.0-flash`, `gemini-2.5-pro-preview-03-25` | [Gemini Models](https://ai.google.dev/gemini-api/docs/models) |
 | Grok | `grok-3`, `grok-2-vision` | `grok-2-vision-1212`, `grok-2-vision`, `grok-2-vision-latest`, `grok-3-mini-fast-beta`, `grok-3-mini-fast`, `grok-3-mini-fast-latest`, `grok-3-mini-beta`, `grok-3-mini`, `grok-3-mini-latest`, `grok-3-fast-beta`, `grok-3-fast`, `grok-3-fast-latest`, `grok-3-beta`, `grok-3`, `grok-3-latest` | [Grok Models](https://docs.x.ai/docs/models#models-and-pricing) |
 | LiteLLM | `litellm-gpt-4o` | Any model supported by LiteLLM, including models from OpenAI, Anthropic, Google, Gemini, Mistral, Cohere, and more. | [LiteLLM Models](https://docs.litellm.ai/docs/providers) |
-| Ollama | `ollama-qwen2.5` | Any model supported by Ollama, such as `DeepSeek-R1`, `Qwen 3`, `Llama 3.3`, `Gemma 3`, `Qwen 2.5‑VL`, and other models. | [Ollama Models](https://ollama.ai/library) |
+| Ollama | `ollama-qwen2.5` | Any model supported by Ollama, such as `DeepSeek-R1`, `Qwen 3`, `Llama 3.3`, `Gemma 3`, `Qwen 2.5-VL`, and other models. | [Ollama Models](https://ollama.ai/library) |
+| LM Studio | `lmstudio-Qwen2.5-7B-Instruct` | Any text model you run locally via LM Studio’s OpenAI-compatible endpoint (default `http://localhost:1234/v1`). | LM Studio (local OpenAI-compatible) |
+
+### Using LM Studio
+
+1. In LM Studio, start the local server (OpenAI-compatible) and load a model (e.g., **Qwen2.5-7B-Instruct**).  
+2. Set the environment variables in your private `.env`:
+   ```
+   LMSTUDIO_BASE_URL=http://localhost:1234/v1
+   LMSTUDIO_API_KEY=lm-studio
+   ```
+3. In your config or code, use a model string with the `lmstudio-` prefix, e.g.:
+   ```
+   lmstudio-Qwen2.5-7B-Instruct

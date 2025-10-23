@@ -83,9 +83,11 @@ def test_all_engines_with_fault_tolerance():
         {"model_string": "gemini-1.5-pro", "expected": "ChatGemini", "kwargs": {}},
         {"model_string": "grok", "expected": "ChatGrok", "kwargs": {}},
         {"model_string": "vllm-meta-llama/Llama-3-8b-instruct", "expected": "ChatVLLM", "kwargs": {}},
+        {"model_string": "lmstudio-Qwen2.5-7B-Instruct", "expected": "ChatLMStudio", "kwargs": {}},
         {"model_string": "litellm-openai/gpt-4o", "expected": "ChatLiteLLM", "kwargs": {}},
         {"model_string": "together-meta-llama/Llama-3-70b-chat-hf", "expected": "ChatTogether", "kwargs": {}},
         {"model_string": "ollama-llama3", "expected": "ChatOllama", "kwargs": {}},
+        {"model_string": "lmstudio-Qwen2.5-7B-Instruct", "expected": "ChatLMStudio", "kwargs": {}},
         # Invalid case
         {"model_string": "unknown-model-123", "expected": "Unknown", "kwargs": {}},
     ]
