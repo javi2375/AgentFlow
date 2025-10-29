@@ -14,7 +14,6 @@ python-dotenv==1.0.1
 sympy==1.13.1
 tenacity==9.0.0
 wikipedia==1.4.0
-vllm==0.8.5
 dashscope==1.24.2
 # litellm==2.1.1
 # ollama==0.5.1
