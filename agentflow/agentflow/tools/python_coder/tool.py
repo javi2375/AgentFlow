@@ -84,7 +84,7 @@ For optimal results with the {TOOL_NAME}:
 
 class Python_Coder_Tool(BaseTool):
     require_llm_engine = True
-    def __init__(self, model_string="dashscope-qwen2.5-coder-7b-instruct"):
+    def __init__(self, model_string=None):
         super().__init__(
             tool_name=TOOL_NAME,
             tool_description="A tool that generates and executes simple Python code snippets for basic arithmetical calculations and math-related problems. The generated code runs in a highly restricted environment with only basic mathematical operations available.",
@@ -111,12 +111,13 @@ class Python_Coder_Tool(BaseTool):
                 "best_practices": BEST_PRACTICE
             }
         )
-        print(f"Initializing Python_Coder_Tool with model_string: {model_string}")
+        actual_model_string = model_string if model_string else "gpt-4o-mini"
+        print(f"Initializing Python_Coder_Tool with model_string: {actual_model_string}")
         # self.llm_engine = create_llm_engine(model_string=model_string, is_multimodal=False, base_url=base_url) if model_string else None
 
         # NOTE: deterministic mode
         self.llm_engine = create_llm_engine(
-            model_string=model_string, 
+            model_string=actual_model_string,
             is_multimodal=False, 
             temperature=0.0, 
             top_p=1.0, 

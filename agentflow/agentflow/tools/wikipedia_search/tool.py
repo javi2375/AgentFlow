@@ -1,19 +1,15 @@
 import os
 import sys
-import wikipedia
+from typing import Optional, Dict, Any, List
+
 from pydantic import BaseModel
 
 from agentflow.tools.base import BaseTool
 from agentflow.engine.factory import create_llm_engine
 from agentflow.tools.web_search.tool import Web_Search_Tool
 
-# from web_rag import Web_Search_Tool
-# from agentflow.tools.web_search.tool import Web_Search_Tool # NOTE: Shall be used in the future
-
-# from utilis import select_relevant_queries
-
-from agentflow.tools.base import BaseTool
-from agentflow.engine.factory import create_llm_engine
+# Import wikipedia package
+import wikipedia
 
 # Tool name mapping - this defines the external name for this tool
 TOOL_NAME = "Wikipedia_RAG_Search_Tool"
@@ -101,11 +97,17 @@ Output:
 """
 
     try:
-        prompt = prompt.format(original_query=original_query, query_candidates=query_candidates)     
+        prompt = prompt.format(original_query=original_query, query_candidates=query_candidates)
 
         response = llm_engine.generate(prompt, response_format=Select_Relevant_Queries)
         # print(response)
 
+        # Handle the case where response might be a string (when JSON parsing fails)
+        if isinstance(response, str):
+            print(f"Warning: Received string response instead of Select_Relevant_Queries object: {response}")
+            # Fall back to returning all queries as relevant
+            return query_candidates, list(range(len(query_candidates)))
+        
         matched_queries = response.matched_queries
         matched_query_ids = [int(i) for i in response.matched_query_ids]
         return matched_queries, matched_query_ids
@@ -114,7 +116,7 @@ Output:
         return [], []
 
 class Wikipedia_Search_Tool(BaseTool):
-    def __init__(self, model_string="gpt-4o-mini"):
+    def __init__(self, model_string=None):
         super().__init__(
             tool_name=TOOL_NAME,
             tool_description="A tool that searches Wikipedia and returns relevant pages with their page titles, URLs, abstract, and retrieved information based on a given query.",
@@ -142,7 +144,14 @@ class Wikipedia_Search_Tool(BaseTool):
                 "best_practice": BEST_PRACTICE
             }
         )
-        self.llm_engine = create_llm_engine(model_string=model_string, temperature=0.0, top_p=1.0, frequency_penalty=0.0, presence_penalty=0.0)
+        # Use the provided model_string, default to a LM Studio model if not provided
+        if model_string is not None:
+            self.model_string = model_string
+        else:
+            # Default to a LM Studio model for tool usage
+            self.model_string = "lmstudio-demyagent-4b-qx86-hi-mlx"
+        
+        self.llm_engine = create_llm_engine(model_string=self.model_string, temperature=0.0, top_p=1.0, frequency_penalty=0.0, presence_penalty=0.0)
 
     def _get_wikipedia_url(self, query):
         """
@@ -151,17 +160,17 @@ class Wikipedia_Search_Tool(BaseTool):
         query = query.replace(" ", "_") # replace spaces with underscores
         return f"https://en.wikipedia.org/wiki/{query}"
 
-    def search_wikipedia(self, query, max_length=100, max_pages=10):
+    def search_wikipedia(self, query: str, max_length: int = 100, max_pages: int = 10) -> List[Dict[str, Any]]:
         """
         Searches Wikipedia based on the given query and returns multiple pages with their text and URLs.
 
         Parameters:
             query (str): The search query for Wikipedia.
+            max_length (int): Maximum length of the content to return. -1 for no limit.
+            max_pages (int): Maximum number of pages to process.
 
         Returns:
-            tuple: (search_results, pages_data)
-                - search_results: List of search result titles
-                - pages_data: List of dictionaries containing page info (title, text, url, error)
+            List[Dict[str, Any]]: List of dictionaries containing page info (title, text, url, error)
         """
         try:
             search_results = wikipedia.search(query)
@@ -171,7 +180,7 @@ class Wikipedia_Search_Tool(BaseTool):
             pages_data = []
             pages_to_process = search_results[:max_pages] if max_pages else search_results
 
-            # get the pages datafsave
+            # get the pages data
             
             for title in pages_to_process:
                 try:
@@ -198,7 +207,7 @@ class Wikipedia_Search_Tool(BaseTool):
         except Exception as e:
             return [{"title": None, "url": None, "abstract": None, "error": f"Error searching Wikipedia: {str(e)}"}]
 
-    def execute(self, query):
+    def execute(self, query: str) -> Dict[str, Any]:
         """
         Searches Wikipedia based on the provided query and returns all matching pages.
 
@@ -208,15 +217,16 @@ class Wikipedia_Search_Tool(BaseTool):
         Returns:
             dict: A dictionary containing the search results and all matching pages with their content.
         """
-        # Check if OpenAI API key is set
+        # Check if OpenAI API key is set (only needed for embeddings)
+        # For LM Studio, we don't need this check for the main functionality
         api_key = os.getenv("OPENAI_API_KEY")
         if not api_key:
-            sys.exit("[Wikipedia RAG Search] Error: OPENAI_API_KEY environment variable is not set.")
+            print("[Wikipedia RAG Search] Warning: OPENAI_API_KEY environment variable is not set. Embeddings will not work.")
             
         # First get relevant queries from the search results
         search_results = self.search_wikipedia(query)
 
-        # Get the titles of the pages   
+        # Get the titles of the pages
         titles = [page["title"] for page in search_results if page["title"] is not None]
         if not titles:
             return {"query": query, "relevant_pages": [], "other_pages (may be irrelevant to the query)": search_results}

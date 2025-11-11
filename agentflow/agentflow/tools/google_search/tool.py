@@ -4,10 +4,13 @@ import requests
 from dotenv import load_dotenv
 load_dotenv()
 
-from google import genai
-from google.genai import types
+try:
+    from google import genai
+    from google.genai import types
+except ImportError:
+    raise ImportError("If you'd like to use Google Search tool, please install the google-genai package by running `pip install google-genai`, and add 'GOOGLE_API_KEY' to your environment variables.")
 
-from agentflow.tools.base import BaseTool
+from agentflow.agentflow.tools.base import BaseTool
 
 # For formatting the response
 import requests
@@ -31,7 +34,7 @@ BEST_PRACTICES = """
 """
 
 class Google_Search_Tool(BaseTool):
-    def __init__(self, model_string="gemini-2.5-flash"):
+    def __init__(self, model_string=None):
         super().__init__(
             tool_name=TOOL_NAME,
             tool_description="A web search tool powered by Google's Gemini AI that provides real-time information from the internet with citation support.",
@@ -61,7 +64,7 @@ class Google_Search_Tool(BaseTool):
             }
         )
         self.max_retries = 5
-        self.search_model = model_string
+        self.search_model = model_string if model_string else "gemini-2.5-flash"
 
         try:
             api_key = os.getenv("GOOGLE_API_KEY")

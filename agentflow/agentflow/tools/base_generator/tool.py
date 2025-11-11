@@ -22,7 +22,7 @@ For optimal results with the {TOOL_NAME}:
 class Base_Generator_Tool(BaseTool):
     require_llm_engine = True
 
-    def __init__(self, model_string="gpt-4o-mini"):
+    def __init__(self, model_string=None):
         super().__init__(
             tool_name=TOOL_NAME,
             tool_description="A generalized tool that takes query from the user, and answers the question step by step to the best of its ability. It can also accept an image.",
@@ -58,7 +58,7 @@ class Base_Generator_Tool(BaseTool):
             }
 
         )
-        self.model_string = model_string  
+        self.model_string = model_string if model_string else "gpt-4o-mini"
         print(f"Initializing Generalist Tool with model: {self.model_string}")
         # multimodal = True if image else False
         multimodal = False

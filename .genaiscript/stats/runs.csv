@@ -1,0 +1,7 @@
+script,status,cost,total_tokens,prompt_tokens,completion_tokens,trace,version
+system.python,error,0,0,0,0,,2.5.1
+system.vision_ask_images,success,0,0,0,0,,2.5.1
+system.python,success,0,0,0,0,,2.5.1
+system.agent_planner,success,0,0,0,0,,2.5.1
+system.agent_planner,success,0,0,0,0,,2.5.1
+system.user_input,success,0,0,0,0,,2.5.1

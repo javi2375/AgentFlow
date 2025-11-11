@@ -27,6 +27,14 @@ try:
 except ImportError:
     pass
 
+try:
+    import vllm
+    from . import vllm as vllm_instrumentation
+    
+    VLLM_INSTALLED = True
+except ImportError:
+    pass
+
 
 def instrument_all():
     if AGENTOPS_INSTALLED:

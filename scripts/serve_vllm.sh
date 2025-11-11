@@ -9,6 +9,27 @@
 #   - Port 8000
 # ===========================================================================
 
+# Check for macOS and CUDA availability
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "❌ vLLM requires NVIDIA GPU and CUDA, which are not available on macOS."
+    echo ""
+    echo "🍎 For macOS, we recommend using LM Studio instead:"
+    echo "   1. Install LM Studio from https://lmstudio.ai/"
+    echo "   2. Download a model like 'Qwen2.5-7B-Instruct'"
+    echo "   3. Start LM Studio server (default port: 1234)"
+    echo "   4. Use 'lmstudio-' prefix in your model configurations"
+    echo ""
+    echo "📚 See assets/doc/llm_engine.md for LM Studio setup instructions."
+    exit 1
+fi
+
+# Check for CUDA
+if ! command -v nvcc &> /dev/null; then
+    echo "❌ CUDA not found. Please install NVIDIA CUDA toolkit."
+    echo "   Visit: https://developer.nvidia.com/cuda-downloads"
+    exit 1
+fi
+
 MODEL="AgentFlow/agentflow-planner-7b"
 GPU="0"
 PORT=8000

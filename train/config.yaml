@@ -1,10 +1,12 @@
 # config.yaml
 env:
   OPENAI_API_KEY: "YOUR_ONENAI_API" # not that neccesary
-  CUDA_VISIBLE_DEVICES: '0,1,2,3,4,5,6,7'
   HYDRA_FULL_ERROR: 1
-  N_GPUS: 8
-  BASE_MODEL: 'Qwen/Qwen2.5-7B-Instruct' # This model here would be served in vllm used by `agentflow.port` and serve as base model of rollout in the training process. 
+  BASE_MODEL: 'agentflow-planner-7b-mlx' # This model will be served via LM Studio on port 1234 for macOS training
+  # Note: CUDA settings removed for macOS compatibility
+  # For NVIDIA GPU systems, uncomment these lines:
+  # CUDA_VISIBLE_DEVICES: '0,1,2,3,4,5,6,7'
+  # N_GPUS: 8
   ROLLOUT_TP_SIZE: 1
   EXPERIMENT_NAME: 'rollout_all_7B_useklloss'
   PROJECT_NAME: 'AgentFlow_general'
@@ -12,16 +14,18 @@ env:
   VERBOSITY: 'DEBUG'
   N_WORKERS: 16
   ENABLE_TOOLS: ["Base_Generator_Tool","Python_Coder_Tool","Google_Search_Tool","Wikipedia_Search_Tool"] # if openai API is on then can add tools
-  TOOL_ENGINE: ["dashscope","dashscope","Default","Default"] # Default means use tool.py 's default params, you can set "dashscope" as qwen7B, "gpt-40-mini" for gpt, "self" as the training BASE_MODEL
-  # TOOL_ENGINE: ["vllm-Qwen/Qwen2.5-7B-Instruct","vllm-Qwen/Qwen2.5-7B-Instruct","Default","Default"] # if you are not using dashscope api., you can use vllm to serve the qwen2.5-7b-instruct in your own server and please redsign the llm_engine port. .
+  TOOL_ENGINE: ["lmstudio","lmstudio","Default","Default"] # For macOS: use LM Studio with local model
+  # Alternative options for different environments:
+  # Cloud-based: ["dashscope","dashscope","Default","Default"] # Use DashScope API
+  # NVIDIA GPU: ["vllm-Qwen/Qwen2.5-7B-Instruct","vllm-Qwen/Qwen2.5-7B-Instruct","Default","Default"] # Use local vLLM server
   TOOL_STEPS: 3 # do not too long 3-5 is good cause it may surge the context
-  TEST_TEMPERATURE: 0.0
+  TEST_TEMPERATURE: 0.5
   TRAIN_TEMPERATURE: 0.7 # 0.7 - 0.5 is good please check whether every planner and the executor are correctly transfered this parameter
   OUTPUT_TYPE: "direct" # different output mode in rollout's last output, not that neccesary if we are searching and math reasoning cause answer should be short
   AGENT_MAX_TIMEOUT: 500 # donot too short 300-500 is good. When steps extends, time surges. 
 
 python_args:
-  agentflow.port: 9999 # it will both send to agent serving and training. 
+  agentflow.port: 1986 # it will both send to agent serving and training. 
   algorithm.adv_estimator: 'grpo'
   data.train_files: '${BASE_DATA_DIR}/train/combined_train.parquet' # mixed nq search and mathard, shuffled
   data.val_files: '${BASE_DATA_DIR}/val/aime24.parquet' # AIME24 for fast check, the first epoch maybe down due to async start and fiel lock
@@ -48,8 +52,8 @@ python_args:
   actor_rollout_ref.model.enable_gradient_checkpointing: True
   actor_rollout_ref.actor.fsdp_config.param_offload: False
   actor_rollout_ref.actor.fsdp_config.optimizer_offload: False
-  actor_rollout_ref.rollout.name: 'vllm'
-  actor_rollout_ref.rollout.gpu_memory_utilization: 0.6 # 0.55-0.65 is fine, too small the BASE_MODEL inference will be slow, too large, the kvcache and other extra saved logic will cause OOM
+  actor_rollout_ref.rollout.name: 'lmstudio' # Use LM Studio for macOS compatibility
+  # actor_rollout_ref.rollout.gpu_memory_utilization: 0.6 # GPU memory setting - not applicable for LM Studio on macOS
   actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu: 4
   actor_rollout_ref.ref.fsdp_config.param_offload: False
   algorithm.use_kl_in_reward: False

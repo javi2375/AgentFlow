@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import logging
 import os
 from contextlib import contextmanager
 from typing import List, Optional, TYPE_CHECKING
@@ -20,6 +19,8 @@ if TYPE_CHECKING:
     from agentops.integration.callbacks.langchain import LangchainCallbackHandler
 
 
+# Using standard logger instead of custom agent_logging
+import logging
 logger = logging.getLogger(__name__)
 
 

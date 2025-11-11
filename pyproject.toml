@@ -14,6 +14,7 @@ dependencies = [
   "uvicorn",
   "fastapi",
   "aiohttp",
+  "requests",
 ]
 
 [project.optional-dependencies]
@@ -49,6 +50,9 @@ agent = [
   "sqlparse",
   "nltk",
   "uv",
+]
+vllm = [
+  "vllm",
 ]
 
 [build-system]

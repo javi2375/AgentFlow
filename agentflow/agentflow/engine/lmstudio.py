@@ -9,6 +9,9 @@ import os
 import json
 import base64
 import platformdirs
+import time
+import requests
+import socket
 from typing import List, Union
 from tenacity import retry, stop_after_attempt, wait_random_exponential
 
@@ -34,6 +37,8 @@ class ChatLMStudio(EngineLM, CachedEngine):
         use_cache: bool = True,
         base_url: str | None = None,
         api_key: str | None = None,
+        connection_timeout: float = 60.0,
+        max_retries: int = 3,
         **kwargs,
     ):
         """
@@ -43,11 +48,15 @@ class ChatLMStudio(EngineLM, CachedEngine):
         :param use_cache: Enable diskcache-based response caching.
         :param base_url: Override LM Studio server base URL (OpenAI-compatible).
         :param api_key: Optional API key; LM Studio generally doesn't require one.
+        :param connection_timeout: Timeout in seconds for connection attempts.
+        :param max_retries: Maximum number of connection retry attempts.
         """
         self.model_string = model_string
         self.use_cache = use_cache
         self.system_prompt = system_prompt
         self.is_multimodal = is_multimodal
+        self.connection_timeout = connection_timeout
+        self.max_retries = max_retries
 
         if self.use_cache:
             root = platformdirs.user_cache_dir("agentflow")
@@ -62,17 +71,90 @@ class ChatLMStudio(EngineLM, CachedEngine):
         # Keep a default token for compatibility; LM Studio often ignores it.
         self.api_key = api_key or os.environ.get("LMSTUDIO_API_KEY", "lm-studio")
 
+        # Perform connection health check before creating client
+        self._validate_connection()
+        
         try:
             self.client = OpenAI(
                 base_url=self.base_url,
                 api_key=self.api_key,
+                timeout=self.connection_timeout,
             )
+            # Test connection with a simple request
+            self._test_connection()
         except Exception as e:
             raise ValueError(
                 f"Failed to connect to LM Studio server at {self.base_url}. "
                 f"Please ensure LM Studio's OpenAI-compatible server is running. Error: {e}"
             )
 
+    def _validate_connection(self):
+        """
+        Validate that LM Studio server is reachable before creating client.
+        Implements retry logic with exponential backoff.
+        """
+        for attempt in range(self.max_retries):
+            try:
+                # Extract host and port from base_url for socket connection test
+                parsed_url = self.base_url.replace("http://", "").replace("https://", "").split("/")[0]
+                host, port = parsed_url.split(":") if ":" in parsed_url else (parsed_url, "80")
+                
+                # Test socket connection
+                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                sock.settimeout(self.connection_timeout)
+                result = sock.connect_ex((host, int(port)))
+                sock.close()
+                
+                if result == 0:
+                    return  # Connection successful
+                    
+                raise ConnectionError(f"Socket connection failed with code {result}")
+                
+            except (socket.gaierror, socket.timeout, ConnectionError, ValueError) as e:
+                if attempt == self.max_retries - 1:
+                    self._raise_connection_error(e, attempt + 1)
+                
+                wait_time = min(2 ** attempt, 5)  # Exponential backoff, max 5 seconds
+                time.sleep(wait_time)
+                
+    def _test_connection(self):
+        """
+        Test LM Studio API endpoint with a simple request.
+        """
+        try:
+            # Test with a simple models list request
+            response = requests.get(
+                f"{self.base_url}/models",
+                headers={"Authorization": f"Bearer {self.api_key}"},
+                timeout=self.connection_timeout
+            )
+            response.raise_for_status()
+            
+        except requests.exceptions.RequestException as e:
+            raise ConnectionError(f"API test failed: {e}")
+            
+    def _raise_connection_error(self, original_error, attempts):
+        """
+        Raise a detailed connection error with troubleshooting information.
+        """
+        error_details = {
+            "base_url": self.base_url,
+            "attempts": attempts,
+            "timeout": self.connection_timeout,
+            "original_error": str(original_error),
+            "troubleshooting": [
+                "1. Ensure LM Studio is running on your machine",
+                "2. Check that LM Studio's OpenAI-compatible server is enabled",
+                f"3. Verify server URL is correct (current: {self.base_url})",
+                "4. Check if port is available and not blocked by firewall",
+                "5. Try restarting LM Studio application"
+            ]
+        }
+        
+        raise ValueError(
+            f"LM Studio connection failed after {attempts} attempts. "
+            f"Details: {error_details}"
+        )
     @retry(wait=wait_random_exponential(min=1, max=3), stop=stop_after_attempt(3))
     def generate(
         self, content: Union[str, List[Union[str, bytes]]], system_prompt=None, **kwargs

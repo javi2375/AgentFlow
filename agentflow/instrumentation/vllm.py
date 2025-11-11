@@ -3,9 +3,13 @@ from __future__ import annotations
 import warnings
 from typing import List
 
-from vllm.entrypoints.openai.protocol import ChatCompletionResponse
-import vllm.entrypoints.openai.protocol
-from vllm.entrypoints.openai.serving_chat import OpenAIServingChat
+try:
+    from vllm.entrypoints.openai.protocol import ChatCompletionResponse
+    import vllm.entrypoints.openai.protocol
+    from vllm.entrypoints.openai.serving_chat import OpenAIServingChat
+    VLLM_AVAILABLE = True
+except ImportError:
+    VLLM_AVAILABLE = False
 
 
 class ChatCompletionResponsePatched(ChatCompletionResponse):
@@ -57,6 +61,10 @@ async def chat_completion_full_generator(
 
 
 def instrument_vllm():
+    if not VLLM_AVAILABLE:
+        warnings.warn("vllm is not installed. Cannot instrument.")
+        return
+        
     if vllm.entrypoints.openai.protocol.ChatCompletionResponse is ChatCompletionResponsePatched:
         warnings.warn("vllm is already instrumented. Skip the instrumentation.")
         return
@@ -66,4 +74,8 @@ def instrument_vllm():
 
 
 def uninstrument_vllm():
+    if not VLLM_AVAILABLE:
+        warnings.warn("vllm is not installed. Cannot uninstrument.")
+        return
+        
     OpenAIServingChat.chat_completion_full_generator = original_chat_completion_full_generator

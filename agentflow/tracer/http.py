@@ -1,6 +1,5 @@
 from contextlib import contextmanager
 from typing import Iterator, List, Optional, Any, Dict, Callable, Awaitable
-import logging
 import uuid
 import pickle
 import multiprocessing
@@ -21,6 +20,8 @@ from opentelemetry.trace.span import (
 )
 
 
+# Using standard logger instead of custom agent_logging
+import logging
 logger = logging.getLogger(__name__)
 
 

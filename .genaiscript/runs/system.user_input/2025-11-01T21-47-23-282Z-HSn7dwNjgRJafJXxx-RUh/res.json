@@ -1,0 +1,47 @@
+{
+  "status": "success",
+  "messages": [],
+  "env": {
+    "dir": ".",
+    "files": [],
+    "meta": {
+      "id": "system.user_input",
+      "title": "Tools to ask questions to the user.",
+      "group": "system",
+      "model": "github_copilot_chat:gpt-4o",
+      "defTools": [
+        {
+          "id": "user_input_confirm",
+          "description": "Ask the user to confirm a message.",
+          "kind": "tool"
+        },
+        {
+          "id": "user_input_select",
+          "description": "Ask the user to select an option.",
+          "kind": "tool"
+        },
+        {
+          "id": "user_input_text",
+          "description": "Ask the user to input text.",
+          "kind": "tool"
+        }
+      ]
+    },
+    "vars": {
+      "selectedtext": ""
+    },
+    "runDir": "/Users/javi/dev/agent/AgentFlow/Untitled/.genaiscript/runs/system.user_input/2025-11-01T21-47-23-282Z-HSn7dwNjgRJafJXxx-RUh",
+    "runId": "HSn7dwNjgRJafJXxx-RUh"
+  },
+  "version": "2.5.1",
+  "text": "",
+  "reasoning": false,
+  "edits": [],
+  "annotations": [],
+  "changelogs": [],
+  "fileEdits": {},
+  "fences": [],
+  "frames": [],
+  "schemas": {},
+  "runId": "HSn7dwNjgRJafJXxx-RUh"
+}

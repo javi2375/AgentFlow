@@ -1,5 +1,5 @@
 import asyncio
-import logging
+from .agent_logging import get_logger
 import time
 import uuid
 import threading
@@ -10,7 +10,7 @@ import uvicorn
 from fastapi import FastAPI, HTTPException, Path
 from pydantic import Field
 
-from .types import (
+from .agent_types import (
     Rollout,
     Task,
     TaskIfAny,
@@ -19,7 +19,7 @@ from .types import (
     ResourcesUpdate,
 )
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class ServerDataStore:

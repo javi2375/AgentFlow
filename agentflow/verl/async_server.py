@@ -1,11 +1,17 @@
 import ray
 from copy import deepcopy
 
-from agentflow.instrumentation.vllm import instrument_vllm, ChatCompletionResponsePatched
 from starlette.requests import Request
 from starlette.responses import JSONResponse, StreamingResponse
-from vllm.entrypoints.openai.protocol import ChatCompletionRequest, ErrorResponse
-from verl.workers.rollout.vllm_rollout.vllm_async_server import AsyncvLLMServer
+
+try:
+    from agentflow.instrumentation.vllm import instrument_vllm, ChatCompletionResponsePatched
+    from vllm.entrypoints.openai.protocol import ChatCompletionRequest, ErrorResponse
+    from verl.workers.rollout.vllm_rollout.vllm_async_server import AsyncvLLMServer
+    VLLM_AVAILABLE = True
+except ImportError as e:
+    print(f"Warning: vllm or verl dependencies not available: {e}")
+    VLLM_AVAILABLE = False
 
 
 def _unwrap_ray_remote(cls):

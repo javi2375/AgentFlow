@@ -108,38 +108,75 @@ Explore more in our [paper](https://arxiv.org/abs/2510.05592) or [project page](
 - [🚀 Contributing](#-contributing)
 
 ## ⚙️ Setup
+
+### 🍎 macOS Users - Quick Setup with LM Studio
+
+For macOS users, we recommend using **LM Studio** for local LLM inference without requiring NVIDIA GPUs or CUDA:
+
+1. **Install LM Studio**: Download from [lmstudio.ai](https://lmstudio.ai/)
+2. **Download a Model**: In LM Studio, search and download **Qwen2.5-7B-Instruct**
+3. **Start Local Server**: Click "☰" → "Local Server" → "Start Server" (default port 1234)
+4. **Configure AgentFlow**: Add to your `.env` file:
+   ```bash
+   LMSTUDIO_BASE_URL=http://localhost:1234/v1
+   LMSTUDIO_API_KEY=lm-studio
+   ```
+
 ### Installation
 ```bash
 bash setup.sh
 source .venv/bin/activate
 # (Optional) Install `parallel` for running benchmark experiments in parallel:
-sudo apt-get update
-sudo apt-get install parallel
+# On macOS: brew install parallel
+# On Linux: sudo apt-get update && sudo apt-get install parallel
 ```
 
 ### Setup Environment Variables
-Copy the `.env.template` file from `agentflow/.env.template` and rename it to `.env`, then place it in the `agentflow/` folder. Update the following variables with your own API keys:
-- `OPENAI_API_KEY` (for judging reasponse)
+Copy the `.env.template` file from `agentflow/.env.template` and rename it to `.env`, then place it in the `agentflow/` folder.
+
+#### For macOS Users (LM Studio):
+```bash
+# Add these to your .env file for local inference
+LMSTUDIO_BASE_URL=http://localhost:1234/v1
+LMSTUDIO_API_KEY=lm-studio
+OPENAI_API_KEY=your_openai_key  # Still needed for some tools
+GOOGLE_API_KEY=your_google_key  # For Google Search tool
+```
+
+#### For NVIDIA GPU Users (Cloud APIs):
+- `OPENAI_API_KEY` (for judging response)
 - `GOOGLE_API_KEY` (for Google Search tool)
 - `DASHSCOPE_API_KEY` (for calling Qwen-2.5-7B-Instruct as engine for agents and tools)
 - `TOGETHER_API_KEY` (alternative for calling Qwen-2.5-7B-Instruct as engine for agents and tools - recommended for international users)
-- More ways: serve Qwen2.5-7B-instruct model with vLLM (details refer to [`serve_vllm_local.md`](assets/doc/serve_vllm_local.md)).
+- More ways: serve Qwen2.5-7B-instruct model with vLLM (details refer to [`serve_vllm_local.md`](assets/doc/serve_vllm_local.md)) **⚠️ Requires NVIDIA GPU - not available on macOS**
 
-Please check [API Key Setup Guide](assets/doc/api_key.md) for detailed instructions on how to obtain these keys.
+Please check the [API Key Setup Guide](assets/doc/api_key.md) for detailed instructions on how to obtain these keys.
 
 ```bash
 cp agentflow/.env.template agentflow/.env
 # Then edit agentflow/.env with your API keys
 ```
 
-## ⚡ Quick Start on AgentFlow Inference 
-AgentFlow provides a modular agentic system with **four specialized modules** (planner, executor, verifier, generator) that coordinate through **evolving memory** and a **toolkit** over **multiple turns** to solve complex reasoning tasks. 
+## ⚡ Quick Start on AgentFlow Inference
+AgentFlow provides a modular agentic system with **four specialized modules** (planner, executor, verifier, generator) that coordinate through **evolving memory** and a **toolkit** over **multiple turns** to solve complex reasoning tasks.
 
-To quickly experience the system in action, run the command below (don’t forget to set up your API key):
-```python 
-python quick_start.py
+### For macOS Users (LM Studio):
+```python
+# Import the solver
+from agentflow.agentflow.solver import construct_solver
+
+# Set the LLM engine name to use LM Studio
+llm_engine_name = "lmstudio"
+
+# Construct the solver
+solver = construct_solver(llm_engine_name=llm_engine_name)
+
+# Solve the user query
+output = solver.solve("What is the capital of France?")
+print(output["direct_output"])
 ```
-Here is the content of `quick_start.py`:
+
+### For NVIDIA GPU Users (Cloud APIs):
 ```python
 # Import the solver
 from agentflow.agentflow.solver import construct_solver
@@ -154,6 +191,8 @@ solver = construct_solver(llm_engine_name=llm_engine_name)
 output = solver.solve("What is the capital of France?")
 print(output["direct_output"])
 ```
+
+To quickly experience the system in action, run the appropriate command above (don't forget to set up your API keys for your chosen method).
 
 ## 💥 Quick Start on AgentFlow Flow-GRPO Training 
 For effective planning and tool use, the framework directly **optimizes the planner agent within the system in an online fashion using Flow-GRPO**. Below is a quick start for training.
@@ -202,7 +241,19 @@ We provide a comprehensive logging to monitor training. See [logs.md](assets/doc
 
 
 
-## 🎯 AgentFlow Benchmark 
+## 🎯 AgentFlow Benchmark
+
+### For macOS Users (LM Studio):
+Since vLLM requires NVIDIA GPUs, macOS users should use LM Studio for local inference:
+
+1. **Start LM Studio Server**: Make sure your LM Studio local server is running on port 1234
+2. **Run Benchmark**: The benchmark script is already configured to use LM Studio:
+```bash
+cd test
+bash exp/run_all_models_all_datasets.sh
+```
+
+### For NVIDIA GPU Users (vLLM):
 Serve the trained planner model with VLLM (here we deploy our [7B Flow-GRPO planner model](https://huggingface.co/AgentFlow/agentflow-planner-7b)):
 ```bash
 bash scripts/serve_vllm.sh
@@ -214,12 +265,27 @@ cd test
 bash exp/run_all_models_all_datasets.sh
 ```
 
-You can find more benchmarking details in [benchmark.md](assets/doc/benchmark.md). 
+You can find more benchmarking details in [benchmark.md](assets/doc/benchmark.md).
 
 ## 🧩 Use Your Own Model in AgentFlow
 
 AgentFlow supports different LLM engines for each agent module. See [llm_engine.md](assets/doc/llm_engine.md) for supported models and [`factory.py`](agentflow/agentflow/engine/factory.py) for the corresponding `model_string` configuration:
 
+### For macOS Users (LM Studio):
+**Planner Agent:**
+- The benchmark script [`test/exp/run_all_models_all_datasets.sh`](test/exp/run_all_models_all_datasets.sh) is already configured to use LM Studio
+- To use a different local model, modify the `model_string` parameter:
+```bash
+model_string="lmstudio-your-model-name"
+```
+
+**Other Agents (Executor, Verifier, Generator):**
+- Update the engine configuration to use LM Studio in [`agentflow/agentflow/models/planner.py:19`](agentflow/agentflow/models/planner.py#L19):
+```python
+self.llm_engine_fixed = create_llm_engine(model_string="lmstudio", is_multimodal=False, temperature=temperature)
+```
+
+### For NVIDIA GPU Users (Cloud APIs):
 **Planner Agent:**
 - Modify the `llm_engine_name` parameter in [`test/exp/run_all_models_all_datasets.sh`](test/exp/run_all_models_all_datasets.sh)
 
@@ -243,7 +309,10 @@ executor = Executor(
     temperature=temperature
 )
 ```
+
+### Common Configuration:
 - For detailed information on supported engines and `model_string` formats, see [`llm_engine.md`](assets/doc/llm_engine.md)
+- LM Studio uses OpenAI-compatible API, so most configurations that work with OpenAI will work with LM Studio
 
 
 

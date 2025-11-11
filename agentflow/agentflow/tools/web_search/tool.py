@@ -74,7 +74,7 @@ In the fourth quarter of 2023, the company achieved a total revenue of $5.2 mill
 class Web_Search_Tool(BaseTool):
     require_llm_engine = True
 
-    def __init__(self, model_string="gpt-4o-mini"):
+    def __init__(self, model_string=None):
         super().__init__(
             tool_name=TOOL_NAME,
             tool_description="A specialized tool for answering questions by retrieving relevant information from a given website using RAG (Retrieval-Augmented Generation).",
@@ -104,7 +104,12 @@ class Web_Search_Tool(BaseTool):
         # self.model_string = "gemini-1.5-flash" # NOTE: weak 8B model for tool
         # self.model_string = "dashscope" # NOTE: weak Qwen2.5-7B model for tool
 
-        self.model_string = model_string
+        # Use the provided model_string, default to a LM Studio model if not provided
+        if model_string is not None:
+            self.model_string = model_string
+        else:
+            # Default to a LM Studio model for tool usage
+            self.model_string = "lmstudio-demyagent-4b-qx86-hi-mlx"
         print(f"Initializing Website RAG Tool with model: {self.model_string}")
         self.chunk_size = 200
         self.chunk_overlap = 20
@@ -146,7 +151,7 @@ class Web_Search_Tool(BaseTool):
         }
 
         try:
-            response = requests.get(url, headers=headers, timeout=10)
+            response = requests.get(url, headers=headers, timeout=60)  # Increased timeout to 60 seconds
             response.raise_for_status()
             soup = BeautifulSoup(response.content, 'html.parser')
             text = soup.get_text(separator='\n', strip=True)
@@ -180,20 +185,39 @@ class Web_Search_Tool(BaseTool):
 
     def _embed_strings(self, strings):
         """
-        Embed the strings using OpenAI's embedding model.
+        Embed the strings using OpenAI's embedding model if available, otherwise use a simple fallback.
         Parameters:
             strings (list): A list of strings to embed.
         Returns:
             list: A list of embeddings.
         """
         try:
-            client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-            embeddings = client.embeddings.create(
-                input=strings,
-                model=self.embeddings_model
-            )
-            res = [embedding.embedding for embedding in embeddings.data]
-            return res
+            api_key = os.getenv("OPENAI_API_KEY")
+            if api_key:
+                client = openai.OpenAI(api_key=api_key)
+                embeddings = client.embeddings.create(
+                    input=strings,
+                    model=self.embeddings_model
+                )
+                res = [embedding.embedding for embedding in embeddings.data]
+                return res
+            else:
+                # Fallback: Use simple hash-based embeddings when OpenAI API is not available
+                # This is a very basic fallback - in practice, you'd want a better embedding method
+                import hashlib
+                embeddings = []
+                for s in strings:
+                    # Create a simple hash-based embedding
+                    hash_obj = hashlib.md5(s.encode())
+                    hex_digest = hash_obj.hexdigest()
+                    # Convert hex to a simple numeric vector
+                    embedding = [int(hex_digest[i:i+2], 16) / 255.0 for i in range(0, min(len(hex_digest), 32), 2)]
+                    # Pad or truncate to a standard size (e.g., 16 dimensions)
+                    while len(embedding) < 16:
+                        embedding.append(0.0)
+                    embedding = embedding[:16]
+                    embeddings.append(embedding)
+                return embeddings
         except Exception as e:
             raise Exception(f"Error embedding strings: {str(e)}")
 

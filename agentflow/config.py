@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import argparse
 import inspect
-import logging
+from .agent_logging import get_logger
 from typing import (
     Any,
     List,
@@ -27,7 +27,7 @@ from typing import (
 
 CliConfigurable = Any
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 # TypeVars for precise return type hinting with overloads
 _C = TypeVar("_C", bound=CliConfigurable)

@@ -1,12 +1,14 @@
-import logging
 import multiprocessing
 import signal
 import socket
 import time
+from typing import TYPE_CHECKING
 
 import flask
 import setproctitle
 
+# Using standard logger instead of custom agent_logging
+import logging
 logger = logging.getLogger(__name__)
 
 # Module-level storage for originals
@@ -15,9 +17,13 @@ _original_handle_response = None
 
 
 def _patch_new_agentops():
-    import agentops.instrumentation.providers.openai.wrappers.chat
-    import agentops.instrumentation.providers.openai.stream_wrapper
-    from agentops.instrumentation.providers.openai.wrappers.chat import handle_chat_attributes
+    try:
+        import agentops.instrumentation.providers.openai.wrappers.chat
+        import agentops.instrumentation.providers.openai.stream_wrapper
+        from agentops.instrumentation.providers.openai.wrappers.chat import handle_chat_attributes
+    except ImportError as e:
+        logger.debug(f"AgentOps new version modules not available: {e}")
+        return False
 
     global _original_handle_chat_attributes
 
@@ -54,24 +60,31 @@ def _patch_new_agentops():
 
 
 def _unpatch_new_agentops():
-    import agentops.instrumentation.providers.openai.wrappers.chat
-    import agentops.instrumentation.providers.openai.stream_wrapper
+    try:
+        import agentops.instrumentation.providers.openai.wrappers.chat
+        import agentops.instrumentation.providers.openai.stream_wrapper
 
-    global _original_handle_chat_attributes
-    if _original_handle_chat_attributes is not None:
-        agentops.instrumentation.providers.openai.wrappers.chat.handle_chat_attributes = (
-            _original_handle_chat_attributes
-        )
-        agentops.instrumentation.providers.openai.stream_wrapper.handle_chat_attributes = (
-            _original_handle_chat_attributes
-        )
-        _original_handle_chat_attributes = None
-        logger.info("Unpatched newer version of agentops using handle_chat_attributes")
+        global _original_handle_chat_attributes
+        if _original_handle_chat_attributes is not None:
+            agentops.instrumentation.providers.openai.wrappers.chat.handle_chat_attributes = (
+                _original_handle_chat_attributes
+            )
+            agentops.instrumentation.providers.openai.stream_wrapper.handle_chat_attributes = (
+                _original_handle_chat_attributes
+            )
+            _original_handle_chat_attributes = None
+            logger.info("Unpatched newer version of agentops using handle_chat_attributes")
+    except ImportError as e:
+        logger.debug(f"AgentOps new version modules not available for unpatching: {e}")
 
 
 def _patch_old_agentops():
-    import opentelemetry.instrumentation.openai.shared.chat_wrappers
-    from opentelemetry.instrumentation.openai.shared.chat_wrappers import _handle_response, dont_throw
+    try:
+        import opentelemetry.instrumentation.openai.shared.chat_wrappers
+        from opentelemetry.instrumentation.openai.shared.chat_wrappers import _handle_response, dont_throw
+    except ImportError as e:
+        logger.debug(f"AgentOps old version modules not available: {e}")
+        return False
 
     global _original_handle_response
     _original_handle_response = _handle_response
@@ -99,13 +112,16 @@ def _patch_old_agentops():
 
 
 def _unpatch_old_agentops():
-    import opentelemetry.instrumentation.openai.shared.chat_wrappers
+    try:
+        import opentelemetry.instrumentation.openai.shared.chat_wrappers
 
-    global _original_handle_response
-    if _original_handle_response is not None:
-        opentelemetry.instrumentation.openai.shared.chat_wrappers._handle_response = _original_handle_response
-        _original_handle_response = None
-        logger.info("Unpatched earlier version of agentops using _handle_response")
+        global _original_handle_response
+        if _original_handle_response is not None:
+            opentelemetry.instrumentation.openai.shared.chat_wrappers._handle_response = _original_handle_response
+            _original_handle_response = None
+            logger.info("Unpatched earlier version of agentops using _handle_response")
+    except ImportError as e:
+        logger.debug(f"AgentOps old version modules not available for unpatching: {e}")
 
 
 def instrument_agentops():

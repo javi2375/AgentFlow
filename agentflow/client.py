@@ -1,5 +1,5 @@
 import asyncio
-import logging
+from .agent_logging import get_logger
 import time
 import urllib.parse
 from typing import Any, Dict, Optional, List, Union
@@ -7,10 +7,10 @@ from typing import Any, Dict, Optional, List, Union
 import aiohttp
 import requests
 
-from .types import Rollout, Task, TaskInput, TaskIfAny, ResourcesUpdate, NamedResources
+from .agent_types import Rollout, Task, TaskInput, TaskIfAny, ResourcesUpdate, NamedResources
 
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class AgentFlowClient:

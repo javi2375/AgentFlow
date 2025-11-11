@@ -77,9 +77,10 @@ Example output:
    • claude-3-5-sonnet → 🚫 API key not found in environment
    • deepseek-chat → 🚫 API key not found in environment
    • grok → 🚫 API key not found in environment
-   • vllm-meta-llama/Llama-3-8b-instruct → 🚫 Connection failed
+   • vllm-meta-llama/Llama-3-8b-instruct → 🚫 Connection failed (⚠️ Requires NVIDIA GPU - not available on macOS)
    • together-meta-llama/Llama-3-70b-chat-hf → 🚫 API key not found
    • ollama-llama3 → 🚫 Connection failed
+   • lmstudio-Qwen2.5-7B-Instruct → 🚫 Connection failed (⚠️ Start LM Studio server first)
    • unknown-model-123 → 💥 Unexpected error
 ============================================================
 🎉 Testing complete. Script did NOT crash despite errors.

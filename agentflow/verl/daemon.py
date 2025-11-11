@@ -1,6 +1,5 @@
 import asyncio
 import json
-import logging
 import random
 import socket
 import threading
@@ -14,12 +13,26 @@ import torch
 from agentflow import LLM, AgentFlowServer, NamedResources, Rollout, configure_logger
 from flask import Flask, Response, abort, request
 from openai.types.chat.chat_completion import ChatCompletion
-from tensordict import TensorDict
 
 from verl import DataProto
+try:
+    from tensordict import TensorDict
+except ImportError:
+    # Fallback for when tensordict is not available
+    # This is a minimal compatibility layer
+    class TensorDict(dict):
+        def __init__(self, *args, **kwargs):
+            batch_size = kwargs.pop('batch_size', None)
+            super().__init__(*args, **kwargs)
+            self.batch_size = batch_size
+        
+        def contiguous(self):
+            return self
 
 configure_logger()
 
+# Using standard logger instead of custom agent_logging
+import logging
 logger = logging.getLogger(__name__)
 
 

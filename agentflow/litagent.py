@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-import logging
+from .agent_logging import get_logger
 import weakref
 from typing import Any, List, Dict, Union, Optional, TYPE_CHECKING
 
-from .types import NamedResources, Rollout, Task, TaskInput, Triplet, RolloutRawResult
+from .agent_types import NamedResources, Rollout, Task, TaskInput, Triplet, RolloutRawResult
 
 if TYPE_CHECKING:
     from .trainer import Trainer
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from .tracer import BaseTracer
 
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class LitAgent:

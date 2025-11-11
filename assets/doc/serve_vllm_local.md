@@ -2,13 +2,26 @@
 
 This guide explains how to serve Qwen-2.5-7B-Instruct (or other models) locally using vLLM as an alternative to using DashScope or Together AI APIs.
 
+> **🍎 macOS Users Important Notice:** vLLM requires NVIDIA GPUs and CUDA, which are not available on macOS. For macOS, we recommend using **[LM Studio](./llm_engine.md#using-lm-studio-recommended-for-macos)** instead. See the [LM Studio setup guide](./llm_engine.md#using-lm-studio-recommended-for-macos) for macOS-compatible local inference.
+
 ---
 
 ## Prerequisites
 
-1. **GPU**: At least one NVIDIA GPU with sufficient VRAM (recommended: 16GB+ for 7B models)
-2. **vLLM installed**: Should already be installed if you ran `bash setup.sh`
+1. **GPU**: At least one NVIDIA GPU with sufficient VRAM (recommended: 16GB+ for 7B models) **❌ Not available on macOS**
+2. **vLLM installed**: Should already be installed if you ran `bash setup.sh` **❌ Not compatible with macOS**
 3. **Model access**: Ensure you have access to download models from HuggingFace
+4. **CUDA**: NVIDIA CUDA toolkit installed and configured **❌ Not available on macOS**
+
+### 🍎 Alternative for macOS Users
+
+For macOS users, we recommend using **LM Studio** instead:
+- ✅ Works on Apple Silicon (M1/M2/M3) and Intel Macs
+- ✅ No CUDA or NVIDIA dependencies required
+- ✅ Local inference with privacy benefits
+- ✅ OpenAI-compatible API
+
+See [LM Studio Setup Guide](./llm_engine.md#using-lm-studio-recommended-for-macos) for detailed instructions.
 
 ---
 
@@ -176,7 +189,17 @@ Some configurations may support environment variables. Check your specific setup
 
 ## Common Issues & Troubleshooting
 
-### Issue 1: Port Already in Use
+### Issue 1: macOS Compatibility
+**Problem:** vLLM doesn't work on macOS
+
+**Solution:** Use **LM Studio** instead:
+```bash
+# Install LM Studio from https://lmstudio.ai/
+# Start local server and load your model
+# Use model string: lmstudio-Qwen2.5-7B-Instruct
+```
+
+### Issue 2: Port Already in Use
 **Error:** `Address already in use`
 
 **Solution:** Change the port in `serve_vllm_qwen.sh`:
@@ -184,15 +207,16 @@ Some configurations may support environment variables. Check your specific setup
 PORT=8002  # Use a different port
 ```
 
-### Issue 2: Out of Memory (OOM)
+### Issue 3: Out of Memory (OOM)
 **Error:** `CUDA out of memory`
 
 **Solutions:**
 1. Use a smaller model (e.g., Qwen2.5-3B-Instruct)
 2. Enable quantization (add `--quantization awq` or `--quantization gptq` to vllm serve)
 3. Reduce max model length: `--max-model-len 4096`
+4. **For macOS:** Use LM Studio with quantized GGUF models
 
-### Issue 3: Model Download Fails
+### Issue 4: Model Download Fails
 **Error:** Cannot download model from HuggingFace
 
 **Solution:** Set HuggingFace cache and token:
@@ -201,13 +225,14 @@ export HF_HOME=/path/to/cache
 export HF_TOKEN=your_huggingface_token  # If accessing gated models
 ```
 
-### Issue 4: Connection Refused
+### Issue 5: Connection Refused
 **Error:** `Connection refused` when testing
 
 **Solution:**
 1. Check if server is running: `tmux ls`
 2. View server logs: `tmux attach-session -t vllm_qwen`
 3. Verify port: `curl http://localhost:8001/health`
+4. **For macOS:** Ensure LM Studio server is running on port 1234
 
 ---
 
@@ -235,12 +260,20 @@ Just make sure to configure the correct `base_url` for each agent.
 
 ## Resource Requirements
 
+### NVIDIA GPU Systems (vLLM)
 | Model Size | Minimum VRAM | Recommended VRAM | Tensor Parallel |
 |------------|--------------|------------------|-----------------|
 | 7B (FP16)  | 14 GB        | 16 GB+           | 1 GPU           |
 | 7B (INT8)  | 8 GB         | 12 GB+           | 1 GPU           |
 | 7B (INT4)  | 4 GB         | 8 GB+            | 1 GPU           |
 | 72B (FP16) | 144 GB       | 160 GB+          | 2-4 GPUs        |
+
+### 🍎 macOS Systems (LM Studio)
+| Model Size | Minimum RAM | Recommended RAM | Notes |
+|------------|--------------|------------------|-------|
+| 7B (Q4_K_M) | 8 GB        | 16 GB+           | Apple Silicon recommended |
+| 7B (Q8_0)   | 12 GB       | 20 GB+           | Better quality, more memory |
+| 3B (Q4_K_M) | 4 GB        | 8 GB+            | Good for older Macs |
 
 ---
 

@@ -1,0 +1,37 @@
+{
+  "status": "success",
+  "messages": [],
+  "env": {
+    "dir": ".",
+    "files": [],
+    "meta": {
+      "id": "system.agent_planner",
+      "title": "A planner agent",
+      "group": "system",
+      "model": "github_copilot_chat:gpt-4o",
+      "defTools": [
+        {
+          "id": "agent_planner",
+          "description": "generates a plan to solve a task",
+          "kind": "agent"
+        }
+      ]
+    },
+    "vars": {
+      "selectedtext": ""
+    },
+    "runDir": "/Users/javi/dev/agent/AgentFlow/Untitled/.genaiscript/runs/system.agent_planner/2025-11-01T21-45-01-733Z-DTwYpmL9zbNocVotDS1vK",
+    "runId": "DTwYpmL9zbNocVotDS1vK"
+  },
+  "version": "2.5.1",
+  "text": "",
+  "reasoning": false,
+  "edits": [],
+  "annotations": [],
+  "changelogs": [],
+  "fileEdits": {},
+  "fences": [],
+  "frames": [],
+  "schemas": {},
+  "runId": "DTwYpmL9zbNocVotDS1vK"
+}

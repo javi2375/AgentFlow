@@ -3,11 +3,11 @@ import time
 import json
 from typing import Optional
 
-from agentflow.models.initializer import Initializer
-from agentflow.models.planner import Planner
-from agentflow.models.memory import Memory
-from agentflow.models.executor import Executor
-from agentflow.models.utils import make_json_serializable_truncated
+from agentflow.agentflow.models.initializer import Initializer
+from agentflow.agentflow.models.planner import Planner
+from agentflow.agentflow.models.memory import Memory
+from agentflow.agentflow.models.executor import Executor
+from agentflow.agentflow.models.utils import make_json_serializable_truncated
 
 class Solver:
     def __init__(
@@ -203,7 +203,9 @@ def construct_solver(llm_engine_name : str = "gpt-4o",
                      verbose : bool = True,
                      vllm_config_path : str = None,
                      base_url : str = None,
-                     temperature: float = 0.0
+                     temperature: float = 0.0,
+                     planner_model: str = None,
+                     executor_model: str = None
                      ):
     
     # Instantiate Initializer
@@ -230,8 +232,7 @@ def construct_solver(llm_engine_name : str = "gpt-4o",
 
     # Instantiate Executor
     executor = Executor(
-        # llm_engine_name=llm_engine_name,
-        llm_engine_name="lmstudio",
+        llm_engine_name=llm_engine_name,
         root_cache_dir=root_cache_dir,
         verbose=verbose,
         # base_url=base_url,

@@ -1,6 +1,6 @@
 import re
 from pydantic import BaseModel
-from agentflow.engine.openai import ChatOpenAI
+from agentflow.agentflow.engine.openai import ChatOpenAI
 
 
 class AnswerVerification(BaseModel):

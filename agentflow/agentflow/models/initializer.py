@@ -40,7 +40,7 @@ class Initializer:
         current_dir = os.path.dirname(os.path.abspath(__file__))
         while current_dir != '/':
             if os.path.exists(os.path.join(current_dir, 'agentflow')):
-                return os.path.join(current_dir, 'agentflow')
+                return current_dir
             current_dir = os.path.dirname(current_dir)
         raise Exception("Could not find project root")
 
@@ -99,13 +99,17 @@ class Initializer:
         print("Loading tools and getting metadata...")
         self.toolbox_metadata = {}
         agentflow_dir = self.get_project_root()
-        tools_dir = os.path.join(agentflow_dir, 'tools')
+        tools_dir = os.path.join(agentflow_dir, 'agentflow', 'tools')
         # print(f"agentflow directory: {agentflow_dir}")
         # print(f"Tools directory: {tools_dir}")
 
         # Add the agentflow directory and its parent to the Python path
         sys.path.insert(0, agentflow_dir)
         sys.path.insert(0, os.path.dirname(agentflow_dir))
+        # Also add the agentflow/agentflow directory to the path
+        agentflow_agentflow_dir = os.path.join(agentflow_dir, 'agentflow')
+        if agentflow_agentflow_dir not in sys.path:
+            sys.path.insert(0, agentflow_agentflow_dir)
         print(f"Updated Python path: {sys.path}")
 
         if not os.path.exists(tools_dir):
@@ -125,9 +129,14 @@ class Initializer:
                 module_path = os.path.join(root, file)
                 module_name = os.path.splitext(file)[0]
                 relative_path = os.path.relpath(module_path, agentflow_dir)
-                import_path = '.'.join(os.path.split(relative_path)).replace(os.sep, '.')[:-3]
+                import_path = '.'.join(os.path.split(relative_path)).replace(os.sep, '.')[:-3]  # Remove .py from the end
+                # Ensure the import path starts with agentflow.agentflow.tools
+                if not import_path.startswith('agentflow.agentflow.tools'):
+                    import_path = 'agentflow.' + import_path
 
                 print(f"\n==> Attempting to import: {import_path}")
+                print(f"Relative path: {relative_path}")
+                print(f"Module path: {module_path}")
                 try:
                     module = importlib.import_module(import_path)
                     for name, obj in inspect.getmembers(module):
@@ -216,16 +225,49 @@ class Initializer:
                     class_name = tool_name
 
                 # Import the tool module
-                module_name = f"tools.{dir_name}.tool"
+                module_name = f"agentflow.agentflow.tools.{dir_name}.tool"
                 module = importlib.import_module(module_name)
 
                 # Get the tool class
                 tool_class = getattr(module, class_name)
 
                 # Instantiate the tool
-                tool_instance = tool_class()
+                # Find the tool index to determine which engine to use
+                tool_index = -1
+                for i, enabled_tool in enumerate(self.enabled_tools):
+                    # First check short_to_long mapping
+                    if hasattr(self, 'tool_name_mapping'):
+                        short_to_long = self.tool_name_mapping.get('short_to_long', {})
+                        long_to_internal = self.tool_name_mapping.get('long_to_internal', {})
+
+                        # If input is short name, convert to long name
+                        long_name = short_to_long.get(enabled_tool, enabled_tool)
+
+                        # Check if long name matches this directory
+                        if long_name in long_to_internal:
+                            if long_to_internal[long_name]["dir_name"] == dir_name:
+                                tool_index = i
+                                break
+
+                    # Fallback to original behavior
+                    if enabled_tool.lower().replace('_tool', '') == dir_name:
+                        tool_index = i
+                        break
+
+                # Instantiate tool with the appropriate engine
+                if tool_index >= 0 and tool_index < len(self.tool_engine):
+                    engine = self.tool_engine[tool_index]
+                    if engine == "Default":
+                        tool_instance = tool_class()
+                    elif engine == "self":
+                        tool_instance = tool_class(model_string=self.model_string)
+                    else:
+                        tool_instance = tool_class(model_string=engine)
+                else:
+                    tool_instance = tool_class()
 
                 # FIXME This is a temporary workaround to avoid running demo commands
+                # Use the long tool name (from metadata) as the key
                 self.available_tools.append(tool_name)
 
             except Exception as e:
@@ -233,7 +275,7 @@ class Initializer:
                 print(traceback.format_exc())
 
         # update the toolmetadata with the available tools
-        self.toolbox_metadata = {tool: self.toolbox_metadata[tool] for tool in self.available_tools}
+        self.toolbox_metadata = {tool: self.toolbox_metadata[tool] for tool in self.available_tools if tool in self.toolbox_metadata}
         print("\n✅ Finished running demo commands for each tool.")
         # print(f"Updated total number of available tools: {len(self.toolbox_metadata)}")
         # print(f"Available tools: {self.available_tools}")
@@ -244,7 +286,7 @@ class Initializer:
 
         # First, build a temporary mapping by scanning all tools
         agentflow_dir = self.get_project_root()
-        tools_dir = os.path.join(agentflow_dir, 'tools')
+        tools_dir = os.path.join(agentflow_dir, 'agentflow', 'tools')
         self.tool_name_mapping = self.build_tool_name_mapping(tools_dir) if os.path.exists(tools_dir) else {}
 
         # Map input tool names (short) to internal directory names for filtering

@@ -5,9 +5,9 @@ from typing import Any, Dict, List, Tuple
 
 from PIL import Image
 
-from agentflow.engine.factory import create_llm_engine
-from agentflow.models.formatters import MemoryVerification, NextStep, QueryAnalysis
-from agentflow.models.memory import Memory
+from ..engine.factory import create_llm_engine
+from .formatters import MemoryVerification, NextStep, QueryAnalysis
+from .memory import Memory
 
 
 class Planner:
@@ -16,7 +16,7 @@ class Planner:
         self.llm_engine_name = llm_engine_name
         self.is_multimodal = is_multimodal
         # self.llm_engine_mm = create_llm_engine(model_string=llm_engine_name, is_multimodal=False, base_url=base_url, temperature = temperature)
-        self.llm_engine_fixed = create_llm_engine(model_string="lmstudio", is_multimodal=False, temperature = temperature)
+        self.llm_engine_fixed = create_llm_engine(model_string=llm_engine_name, is_multimodal=False, temperature = temperature)
         self.llm_engine = create_llm_engine(model_string=llm_engine_name, is_multimodal=False, base_url=base_url, temperature = temperature)
         self.toolbox_metadata = toolbox_metadata if toolbox_metadata is not None else {}
         self.available_tools = available_tools if available_tools is not None else []
@@ -402,6 +402,10 @@ IMPORTANT: The response must end with either "Conclusion: STOP" or "Conclusion: 
                 response = MemoryVerification(**response_dict)
             except Exception as e:
                 print(f"Failed to parse response as JSON: {str(e)}")
+                # If JSON parsing fails, treat the response as plain text
+                # and continue with the string response
+                # If JSON parsing fails, treat the response as plain text
+                # and continue with the string response
         if isinstance(response, MemoryVerification):
             analysis = response.analysis
             stop_signal = response.stop_signal
@@ -410,9 +414,14 @@ IMPORTANT: The response must end with either "Conclusion: STOP" or "Conclusion: 
             else:
                 return analysis, 'CONTINUE'
         else:
-            analysis = response
+            # Handle case where response is a dict (error response)
+            if isinstance(response, dict) and 'error' in response:
+                print(f"Error in extract_conclusion: Received error response: {response}")
+                return str(response.get('message', 'Unknown error')), 'ERROR'
+            
+            analysis = str(response)  # Convert to string if not already
             pattern = r'conclusion\**:?\s*\**\s*(\w+)'
-            matches = list(re.finditer(pattern, response, re.IGNORECASE | re.DOTALL))
+            matches = list(re.finditer(pattern, analysis, re.IGNORECASE | re.DOTALL))
             # if match:
             #     conclusion = match.group(1).upper()
             #     if conclusion in ['STOP', 'CONTINUE']:
@@ -554,4 +563,3 @@ Output Structure:
         # final_output = self.llm_engine_mm(input_data)
 
         return final_output
-

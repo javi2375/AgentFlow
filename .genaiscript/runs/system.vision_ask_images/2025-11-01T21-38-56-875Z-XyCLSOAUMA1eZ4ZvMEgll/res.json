@@ -1,0 +1,38 @@
+{
+  "status": "success",
+  "messages": [],
+  "env": {
+    "dir": ".",
+    "files": [],
+    "meta": {
+      "id": "system.vision_ask_images",
+      "title": "Vision Ask Image",
+      "description": "Register tool that uses vision model to run a query on images",
+      "group": "system",
+      "model": "github_copilot_chat:gpt-4o",
+      "defTools": [
+        {
+          "id": "vision_ask_images",
+          "description": "Use vision model to run a query on multiple images",
+          "kind": "tool"
+        }
+      ]
+    },
+    "vars": {
+      "selectedtext": ""
+    },
+    "runDir": "/Users/javi/dev/agent/AgentFlow/Untitled/.genaiscript/runs/system.vision_ask_images/2025-11-01T21-38-56-875Z-XyCLSOAUMA1eZ4ZvMEgll",
+    "runId": "XyCLSOAUMA1eZ4ZvMEgll"
+  },
+  "version": "2.5.1",
+  "text": "",
+  "reasoning": false,
+  "edits": [],
+  "annotations": [],
+  "changelogs": [],
+  "fileEdits": {},
+  "fences": [],
+  "frames": [],
+  "schemas": {},
+  "runId": "XyCLSOAUMA1eZ4ZvMEgll"
+}

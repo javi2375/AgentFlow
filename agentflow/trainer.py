@@ -1,5 +1,5 @@
 import asyncio
-import logging
+from .agent_logging import get_logger
 import multiprocessing
 import os
 import signal
@@ -12,13 +12,13 @@ import agentops
 from .client import AgentFlowClient
 from .litagent import LitAgent
 from .runner import AgentRunner
-from .types import ParallelWorkerBase
+from .agent_types import ParallelWorkerBase
 from .tracer.base import BaseTracer
 from .tracer.agentops import AgentOpsTracer
 from .tracer.triplet import TripletExporter
 
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class Trainer(ParallelWorkerBase):

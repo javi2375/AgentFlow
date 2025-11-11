@@ -1,6 +1,6 @@
 import asyncio
 import json
-import logging
+from .agent_logging import get_logger
 import os
 import time
 from contextlib import nullcontext
@@ -11,12 +11,12 @@ import agentops
 from opentelemetry.sdk.trace import ReadableSpan
 from .client import AgentFlowClient
 from .litagent import LitAgent
-from .types import Rollout, Task, Triplet, RolloutRawResult
-from .types import ParallelWorkerBase
+from .agent_types import Rollout, Task, Triplet, RolloutRawResult
+from .agent_types import ParallelWorkerBase
 from .tracer.base import BaseTracer
 from .tracer import TripletExporter
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class AgentRunner(ParallelWorkerBase):

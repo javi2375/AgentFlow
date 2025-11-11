@@ -6,8 +6,8 @@ import signal
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from agentflow.engine.factory import create_llm_engine
-from agentflow.models.formatters import ToolCommand
+from ..engine.factory import create_llm_engine
+from .formatters import ToolCommand
 
 # Tool name mapping: Static fallback mapping (long external names to internal)
 TOOL_NAME_MAPPING_LONG = {
@@ -241,7 +241,7 @@ execution = tool.execute(query=["Methanol", "function of hyperbola", "Fermat's L
             dir_name = tool_name.lower().replace('_tool', '')
             class_name = tool_name
 
-        module_name = f"tools.{dir_name}.tool"
+        module_name = f"agentflow.agentflow.tools.{dir_name}.tool"
 
         try:
             # Dynamically import the module

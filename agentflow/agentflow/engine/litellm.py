@@ -11,7 +11,7 @@ import os
 import json
 import base64
 import platformdirs
-import logging
+from agent_logging import get_logger
 from tenacity import (
     retry,
     stop_after_attempt,
@@ -166,6 +166,7 @@ class ChatLiteLLM(EngineLM, CachedEngine):
         
         # Suppress LiteLLM debug logs
         litellm.suppress_debug_info = True
+        import logging
         for key in logging.Logger.manager.loggerDict.keys():
             if "litellm" in key.lower():
                 logging.getLogger(key).setLevel(logging.WARNING)

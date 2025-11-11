@@ -9,7 +9,7 @@ import sympy
 from autogen_ext.tools.mcp import StdioServerParams
 from agentflow import Trainer, LitAgent, NamedResources, LLM, reward, configure_logger, DevTaskLoader
 
-from agentflow.solver import construct_solver
+from agentflow.agentflow.solver import construct_solver
 from datetime import datetime
 import uuid, json
 from filelock import FileLock
@@ -23,6 +23,7 @@ configure_logger()
 @reward
 async def eval(question: str, groundtruth: any, answer_extracted: any, val: bool = False) -> float:
     """
+  +++++++ REPLACE
     Evaluates if the extracted answer is correct by calling an LLM judge (gpt-4o).
     It strip(), and matches the final answer.
     """
@@ -53,7 +54,17 @@ class AgentFlowRollout:
         print(f"********MODEL {llm_engine_name} SERVED AT {base_url}***********")
         self.resources = resources
         self.llm_engine = llm_engine_name
-        prefix = "" if "gpt" in llm_engine_name else "vllm-"
+        # Handle different engine prefixes for various LLM providers
+        if "gpt" in llm_engine_name:
+            prefix = ""
+        elif "lmstudio" in llm_engine_name:
+            prefix = ""
+        elif "vllm" in llm_engine_name:
+            prefix = "vllm-"
+        else:
+            # Default to vllm prefix for other local models (legacy behavior)
+            prefix = "vllm-"
+        
         self.solver = construct_solver(
             llm_engine_name=prefix + llm_engine_name,
             enabled_tools=enabled_tools,
